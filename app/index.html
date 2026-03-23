@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Math Drill — Road to MBB</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f13;
+    --surface: #16161e;
+    --surface2: #1e1e2a;
+    --border: #2a2a3a;
+    --blue: #4f8ef7;
+    --blue-dim: #1e3a6e;
+    --green: #22c55e;
+    --green-dim: #14532d;
+    --red: #ef4444;
+    --red-dim: #450a0a;
+    --yellow: #f59e0b;
+    --text: #f1f1f5;
+    --muted: #888899;
+    --radius: 12px;
+    --content-max: 1180px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px clamp(16px, 4vw, 40px) 60px;
+  }
+
+  /* ── Header ── */
+  .header {
+    width: 100%;
+    max-width: var(--content-max);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 12px 0;
+  }
+  .logo { font-size: 14px; font-weight: 700; color: var(--blue); letter-spacing: 0.05em; }
+  .level-badge {
+    background: var(--blue-dim);
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--blue);
+  }
+
+  /* ── XP Bar ── */
+  .xp-section {
+    width: 100%;
+    max-width: var(--content-max);
+    margin-bottom: 24px;
+  }
+  .xp-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .xp-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .xp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue), #7c3aed);
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  /* ── Stats Row ── */
+  .stats-row {
+    width: 100%;
+    max-width: var(--content-max);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* ── Question Card ── */
+  .question-card {
+    width: 100%;
+    max-width: var(--content-max);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 28px;
+    box-shadow: 0 0 40px rgba(79, 142, 247, 0.07);
+    transition: box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .question-card.flash-correct { animation: flashGreen 0.5s ease; }
+  .question-card.flash-wrong   { animation: flashRed 0.5s ease; }
+
+  @keyframes flashGreen {
+    0%,100% { box-shadow: 0 0 40px rgba(79,142,247,0.07); }
+    50% { box-shadow: 0 0 60px rgba(34,197,94,0.4); border-color: var(--green); }
+  }
+  @keyframes flashRed {
+    0%,100% { box-shadow: 0 0 40px rgba(79,142,247,0.07); }
+    50% { box-shadow: 0 0 60px rgba(239,68,68,0.4); border-color: var(--red); }
+  }
+
+  .q-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .q-top-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+  .category-badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+  }
+  .difficulty-chip {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .difficulty-chip.easy {
+    color: var(--green);
+    border: 1px solid var(--green-dim);
+    background: rgba(34, 197, 94, 0.12);
+  }
+  .difficulty-chip.medium {
+    color: var(--yellow);
+    border: 1px solid #78350f;
+    background: rgba(245, 158, 11, 0.12);
+  }
+  .difficulty-chip.hard {
+    color: var(--red);
+    border: 1px solid var(--red-dim);
+    background: rgba(239, 68, 68, 0.12);
+  }
+  .difficulty-chip.fallback {
+    color: var(--muted);
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    text-transform: none;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  .timer {
+    font-size: 13px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .timer.fast { color: var(--yellow); }
+
+  .question-text {
+    font-size: clamp(22px, 2.2vw, 28px);
+    font-weight: 700;
+    line-height: 1.45;
+    color: var(--text);
+    margin-bottom: 14px;
+    text-align: left;
+    white-space: pre-line;
+    width: 100%;
+  }
+  .hint-details {
+    width: 100%;
+    margin: 0 0 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface2);
+    padding: 0;
+  }
+  .hint-details summary {
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue);
+    padding: 10px 14px;
+    list-style: none;
+  }
+  .hint-details summary::-webkit-details-marker { display: none; }
+  .hint-details .hint-body {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.5;
+    padding: 0 14px 12px;
+    border-top: 1px solid var(--border);
+    margin-top: 0;
+    padding-top: 10px;
+  }
+
+  .answer-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 10px;
+    align-items: stretch;
+  }
+  @media (max-width: 540px) {
+    .answer-row {
+      grid-template-columns: 1fr;
+    }
+    .answer-row .btn { width: 100%; }
+  }
+  .answer-input {
+    min-width: 0;
+    min-height: 48px;
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    color: var(--text);
+    font-size: 20px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    padding: 10px 16px;
+    border-radius: var(--radius);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .answer-input:focus { border-color: var(--blue); }
+  .answer-input::placeholder { color: var(--border); }
+
+  .btn {
+    padding: 12px 20px;
+    border-radius: var(--radius);
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.1s, opacity 0.2s;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--blue); color: #fff; }
+  .btn-skip { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+  .answer-row .btn {
+    padding: 0 22px;
+    min-height: 48px;
+    border: 1px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  .answer-row .btn-primary { border-color: var(--blue); }
+  .answer-row .btn-skip { border-color: var(--border); }
+  .btn-next { background: var(--green); color: #fff; width: 100%; margin-top: 16px; font-size: 16px; padding: 14px; }
+
+  /* ── Feedback Panel ── */
+  .feedback-panel {
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: var(--radius);
+    display: none;
+  }
+  .feedback-panel.show { display: block; }
+  .feedback-panel.correct { background: var(--green-dim); border: 1px solid var(--green); }
+  .feedback-panel.wrong   { background: var(--red-dim);   border: 1px solid var(--red);   }
+
+  .feedback-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .feedback-panel.correct .feedback-header { color: var(--green); }
+  .feedback-panel.wrong   .feedback-header { color: var(--red); }
+
+  .xp-gained {
+    background: rgba(79,142,247,0.15);
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: auto;
+  }
+
+  .solution {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .solution strong { color: var(--text); }
+
+  /* ── Streak Banner ── */
+  .streak-banner {
+    display: none;
+    background: linear-gradient(90deg, #92400e, #78350f);
+    border: 1px solid var(--yellow);
+    color: var(--yellow);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-align: center;
+    margin-top: 12px;
+  }
+  .streak-banner.show { display: block; }
+
+  /* ── Level Up Modal ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--blue);
+    border-radius: 20px;
+    padding: 40px 32px;
+    text-align: center;
+    max-width: 360px;
+    width: 90%;
+    box-shadow: 0 0 80px rgba(79,142,247,0.3);
+    animation: popIn 0.3s ease;
+  }
+  @keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+  .modal-emoji { font-size: 56px; margin-bottom: 12px; }
+  .modal-title { font-size: 28px; font-weight: 900; color: var(--blue); margin-bottom: 6px; }
+  .modal-subtitle { font-size: 15px; color: var(--muted); margin-bottom: 24px; }
+  .modal-new-level { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
+  .modal-btn { background: var(--blue); color: #fff; padding: 12px 32px; border-radius: var(--radius); font-size: 15px; font-weight: 700; cursor: pointer; border: none; }
+
+  /* ── Locked overlay ── */
+  .locked-card {
+    width: 100%;
+    max-width: var(--content-max);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px 28px;
+    text-align: center;
+    display: none;
+  }
+  .locked-card.show { display: block; }
+  .locked-icon { font-size: 40px; margin-bottom: 12px; }
+  .locked-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .locked-desc { font-size: 14px; color: var(--muted); }
+
+  /* ── Catalog (roadmap) ── */
+  .catalog-view {
+    width: 100%;
+    max-width: var(--content-max);
+    margin-bottom: 24px;
+  }
+  .catalog-root {
+    width: 100%;
+    min-width: 0;
+  }
+  .catalog-heading {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .catalog-sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    line-height: 1.45;
+  }
+  .catalog-random-btn {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+  .catalog-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    width: 100%;
+    min-width: 0;
+  }
+  .catalog-section {
+    width: 100%;
+    min-width: 0;
+  }
+  .catalog-section-head {
+    margin-bottom: 12px;
+  }
+  .catalog-section-title {
+    font-size: 15px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+    margin: 0 0 6px 0;
+  }
+  .catalog-section-blurb {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.5;
+    opacity: 0.92;
+  }
+  .catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+  }
+  .catalog-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    padding: 12px 14px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .catalog-card:hover {
+    border-color: var(--blue);
+    background: var(--surface2);
+  }
+  .catalog-rank {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+  .catalog-name {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 6px;
+  }
+  .catalog-progress {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue);
+    font-variant-numeric: tabular-nums;
+    margin-top: auto;
+  }
+  .catalog-meta {
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.3;
+  }
+
+  /* ── Drill view ── */
+  .drill-view {
+    width: 100%;
+    max-width: var(--content-max);
+  }
+  .drill-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .drill-back {
+    flex-shrink: 0;
+  }
+  .drill-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--muted);
+    flex: 1;
+    text-align: right;
+  }
+
+  /* ── Auth UI ── */
+  .auth-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn-auth {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    transition: all 0.2s;
+  }
+  .btn-auth:hover { border-color: var(--blue); background: var(--surface2); }
+  .user-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .user-pill .email { max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .btn-signout {
+    padding: 6px 12px;
+    font-size: 11px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-signout:hover { color: var(--red); border-color: var(--red); }
+  .auth-banner {
+    width: 100%;
+    max-width: var(--content-max);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 16px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--muted);
+    display: none;
+  }
+  .auth-banner.show { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  /* Auth modal */
+  .auth-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+  .auth-modal-overlay.show { display: flex; }
+  .auth-modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    width: 100%;
+    max-width: 360px;
+  }
+  .auth-modal h3 { font-size: 18px; margin-bottom: 20px; color: var(--text); }
+  .auth-form input {
+    width: 100%;
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    color: var(--text);
+    font-size: 15px;
+    padding: 12px 14px;
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    font-family: 'Inter', sans-serif;
+  }
+  .auth-form input:focus { outline: none; border-color: var(--blue); }
+  .auth-form .btn-row { display: flex; gap: 10px; margin-top: 16px; }
+  .auth-form .btn-row button { flex: 1; }
+  .auth-form .auth-error { font-size: 13px; color: var(--red); margin-bottom: 10px; }
+  .auth-form .auth-toggle { font-size: 13px; color: var(--muted); margin-top: 16px; }
+  .auth-form .auth-toggle a { color: var(--blue); cursor: pointer; }
+
+  @media (max-width: 520px) {
+    .question-text { font-size: 20px; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 360px) {
+    .catalog-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="logo">🧮 ROAD TO MBB</div>
+  <div class="auth-area" id="authArea">
+    <button class="btn-auth" id="btnSignIn" onclick="openAuthModal()" style="display:none">Sign in</button>
+    <div class="user-pill" id="userPill" style="display:none">
+      <span class="email" id="userEmail"></span>
+      <button class="btn-signout" onclick="signOut()">Sign out</button>
+    </div>
+  </div>
+  <div class="level-badge" id="levelBadge">Topics</div>
+</div>
+
+<!-- Auth banner (guests) -->
+<div class="auth-banner" id="authBanner">
+  <span>Sign in to save your progress across devices</span>
+  <button class="btn-auth" onclick="openAuthModal()">Sign in</button>
+</div>
+
+<!-- Auth modal (email/password) -->
+<div class="auth-modal-overlay" id="authModal">
+  <div class="auth-modal">
+    <h3 id="authModalTitle">Sign in</h3>
+    <form class="auth-form" id="authForm" onsubmit="return submitAuth(event)">
+      <div class="auth-error" id="authError"></div>
+      <input type="email" id="authEmail" placeholder="Email" required autocomplete="email">
+      <input type="password" id="authPassword" placeholder="Password" required autocomplete="current-password">
+      <div class="btn-row">
+        <button type="button" class="btn btn-skip" onclick="closeAuthModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="authSubmit">Sign in</button>
+      </div>
+      <div class="auth-toggle" id="authToggle"></div>
+    </form>
+  </div>
+</div>
+
+<!-- XP Bar -->
+<div class="xp-section">
+  <div class="xp-meta">
+    <span id="xpLabel">0 XP</span>
+    <span id="xpNext">Next milestone: 200 XP</span>
+  </div>
+  <div class="xp-bar-bg"><div class="xp-bar-fill" id="xpBar" style="width:0%"></div></div>
+</div>
+
+<!-- Stats -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-value" id="statXP">0</div>
+    <div class="stat-label">Total XP</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value" id="statStreak">0 🔥</div>
+    <div class="stat-label">Streak</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value" id="statAccuracy">—</div>
+    <div class="stat-label">Accuracy</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value" id="statCorrect">0</div>
+    <div class="stat-label">Correct</div>
+  </div>
+</div>
+
+<!-- Catalog (sequential topics) -->
+<div class="catalog-view" id="catalogView">
+  <h2 class="catalog-heading">Case math</h2>
+  <p class="catalog-sub">Sequential categories from foundation through deal math (same types as in our research doc). Everything is unlocked — practice what you need.</p>
+  <button type="button" class="btn btn-primary catalog-random-btn" id="catalogRandomBtn">Random mix (all topics)</button>
+  <div class="catalog-root" id="catalogGrid"></div>
+</div>
+
+<!-- Drill -->
+<div class="drill-view" id="drillView" style="display:none">
+  <div class="drill-header">
+    <button type="button" class="btn btn-skip drill-back" onclick="backToCatalog()">← Topics</button>
+    <span class="drill-title" id="drillTitle">Practice</span>
+  </div>
+
+<!-- Question Card -->
+<div class="question-card" id="questionCard">
+  <div class="q-top">
+    <div class="q-top-left">
+      <span class="category-badge" id="categoryBadge">Times Tables</span>
+      <span class="difficulty-chip easy" id="difficultyChip">Easy</span>
+    </div>
+    <span class="timer" id="timer">0:00</span>
+  </div>
+  <div class="question-text" id="questionText">Loading...</div>
+  <details class="hint-details" id="hintDetails">
+    <summary>Show hint</summary>
+    <div class="hint-body" id="hintText"></div>
+  </details>
+  <div class="answer-row">
+    <input class="answer-input" id="answerInput" type="text" placeholder="Your answer" autocomplete="off" autocorrect="off">
+    <button class="btn btn-primary" onclick="submitAnswer()">Check</button>
+    <button class="btn btn-skip" onclick="skipQuestion()">Skip</button>
+  </div>
+
+  <div class="feedback-panel" id="feedbackPanel">
+    <div class="feedback-header">
+      <span id="feedbackIcon">✓</span>
+      <span id="feedbackTitle">Correct!</span>
+      <span class="xp-gained" id="xpGained">+10 XP</span>
+    </div>
+    <div class="solution" id="solutionText"></div>
+  </div>
+
+  <div class="streak-banner" id="streakBanner">🔥 Streak bonus! +50% XP</div>
+
+  <button class="btn btn-next" id="nextBtn" onclick="nextQuestion()" style="display:none">Next Question →</button>
+</div>
+</div>
+
+<!-- Config & Supabase (config.js optional; copy from config.example.js for local auth) -->
+<script>window.__SUPABASE_CONFIG__ = window.__SUPABASE_CONFIG__ || null;</script>
+<script src="config.js" onerror="window.__SUPABASE_CONFIG__=null"></script>
+
+<!-- XP milestone modal -->
+<div class="modal-overlay" id="milestoneModal">
+  <div class="modal">
+    <div class="modal-emoji">🎉</div>
+    <div class="modal-title">Milestone!</div>
+    <div class="modal-subtitle">You crossed an XP threshold</div>
+    <div class="modal-new-level" id="modalMilestoneText"></div>
+    <button class="modal-btn" onclick="closeMilestoneModal()">Keep going →</button>
+  </div>
+</div>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>

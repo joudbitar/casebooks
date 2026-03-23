@@ -1,3 +1,6 @@
 casebooks/
 extracted/
 failed_downloads.txt
+claude_output.log
+app/config.js
+.vercel

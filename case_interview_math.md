@@ -1267,57 +1267,208 @@ Based on frequency × difficulty × impact across all 20 casebooks:
 
 ## 17. Drill Bank
 
-**25 Practice Problems with Answers** (synthesized from real case data)
+**35 practice problems** (D1–D25 below, D26–D35 in [§22](#22-additional-drill-problems-from-new-casebooks)) with **Hint** (formula or method) and **Answer** (worked steps). Open each block to reveal—try the problem first.
 
 ---
 
-**D1.** A company has 500,000 units at $40/unit. Variable cost: $25/unit. Fixed costs: $5M. What's the annual profit?
+**D1. Annual profit from volume and cost structure**
 
-*Answer: Revenue $20M − Variable $12.5M − Fixed $5M = **$2.5M profit***
+You are reviewing a single-product manufacturer.
 
----
+- Annual volume: 500,000 units  
+- Selling price: $40 per unit  
+- Variable cost: $25 per unit  
+- Fixed costs: $5M per year  
 
-**D2.** Fixed costs are $3M. Contribution margin per unit is $15. How many units to break even?
+What is the company’s annual profit?
 
-*Answer: $3M / $15 = **200,000 units***
+<details>
+<summary>Hint</summary>
 
----
+- **Profit** = Revenue − Total variable costs − Fixed costs  
+- **Revenue** = Price × Volume; **total variable** = Variable cost per unit × Volume  
 
-**D3.** Revenue was $80M last year and $100M this year. What's the % change?
+</details>
 
-*Answer: ($100M − $80M) / $80M = 25%*
+<details>
+<summary>Answer</summary>
 
----
+1. Revenue = 500,000 × $40 = **$20M**  
+2. Total variable costs = 500,000 × $25 = **$12.5M**  
+3. Profit = $20M − $12.5M − $5M = **$2.5M**  
 
-**D4.** An investment generates $5M/year in perpetuity. Discount rate: 10%. NPV?
-
-*Answer: $5M / 0.10 = **$50M***
-
----
-
-**D5.** Same investment but cash flow grows at 2%/year. NPV?
-
-*Answer: $5M / (0.10 − 0.02) = $5M / 0.08 = **$62.5M***
-
----
-
-**D6.** Invest $20M today. Returns $4M/year. Payback period?
-
-*Answer: $20M / $4M = **5 years***
+</details>
 
 ---
 
-**D7.** You invest $10M. After 4 years, you have $15M. What's the ROI? What's the CAGR?
+**D2. Break-even in units (fixed costs and contribution margin)**
 
-*Answer:*
-- *ROI: ($15M − $10M) / $10M = 50%*
-- *CAGR: (15/10)^(1/4) − 1 = 1.5^0.25 − 1 ≈ 10.7%*
+A division must cover its fixed cost base before it earns profit on incremental units.
+
+- Annual fixed costs: $3M  
+- Contribution margin per unit sold: $15 (price minus variable cost per unit)  
+
+How many units must the company sell in a year to break even (cover all fixed costs)?
+
+<details>
+<summary>Hint</summary>
+
+- **Break-even volume (units)** = Fixed costs ÷ Contribution margin per unit  
+- Contribution margin per unit already reflects price − variable cost per unit  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. Units to break even = $3,000,000 ÷ $15 per unit  
+2. = **200,000 units** per year  
+
+</details>
 
 ---
 
-**D8.** Estimate the US market for coffee shops (annual revenue).
+**D3. Percentage change in revenue**
 
-*Framework answer:*
+- Last year’s revenue: $80M  
+- This year’s revenue: $100M  
+
+What is the year-over-year percentage change in revenue?
+
+<details>
+<summary>Hint</summary>
+
+- **% change** = (New − Old) ÷ Old  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. Absolute change = $100M − $80M = **$20M**  
+2. % change = $20M ÷ $80M = **0.25 → 25%** year over year  
+
+</details>
+
+---
+
+**D4. NPV of a perpetuity (constant cash flows)**
+
+An asset is expected to generate **$5M in cash per year forever**, starting next period.
+
+- Discount rate (cost of capital): 10%  
+
+What is the present value (NPV) of this perpetual cash flow stream?
+
+<details>
+<summary>Hint</summary>
+
+- **PV of a perpetuity** (constant cash flow *C* starting next period): PV = *C* / *r*  
+- Here *C* = $5M and *r* = 10% = 0.10  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. PV = $5M ÷ 0.10  
+2. = **$50M**  
+
+</details>
+
+---
+
+**D5. NPV of a growing perpetuity**
+
+Same starting cash flow ($5M next year), but cash flows are expected to grow at **2% per year** forever.
+
+- Discount rate: 10%  
+- Perpetual growth rate: 2%  
+
+What is the NPV?
+
+<details>
+<summary>Hint</summary>
+
+- **Growing perpetuity** (cash flow next period *C*, growth *g*, discount *r*, with *r* > *g*): PV = *C* / (*r* − *g*)  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. PV = $5M ÷ (0.10 − 0.02) = $5M ÷ 0.08  
+2. = **$62.5M**  
+
+</details>
+
+---
+
+**D6. Simple payback period**
+
+You invest **$20M** upfront. The project returns **$4M in cash per year** (assume these returns are even and start in year 1).
+
+How many years until cumulative cash inflows equal the initial investment (simple payback)?
+
+<details>
+<summary>Hint</summary>
+
+- **Simple payback** = Initial investment ÷ Annual cash inflow (when cash flows are flat)  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. Payback = $20M ÷ $4M per year  
+2. = **5 years**  
+
+</details>
+
+---
+
+**D7. ROI and CAGR on a lump-sum investment**
+
+You invest **$10M** today. After **4 years**, the investment is worth **$15M** (lump sum, no intermediate cash flows specified).
+
+- What is the total return on investment (ROI) over the period?  
+- What is the compound annual growth rate (CAGR)?
+
+<details>
+<summary>Hint</summary>
+
+- **ROI** (total return) = (Ending value − Initial) ÷ Initial  
+- **CAGR** = (Ending ÷ Beginning)^(1/number of years) − 1  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. **ROI** = ($15M − $10M) ÷ $10M = **50%** over 4 years  
+2. **CAGR** = ($15M ÷ $10M)^(1/4) − 1 = 1.5^0.25 − 1 ≈ **10.7%** per year  
+
+</details>
+
+---
+
+**D8. Market sizing — US coffee shop revenue (annual)**
+
+Size the **total annual revenue** of the US coffee shop market (cafés / specialty coffee retail where customers buy drinks on-site). Use a clear top-down or bottom-up structure and state your assumptions.
+
+<details>
+<summary>Hint</summary>
+
+- **Top-down:** US population → % who visit coffee shops → visits/week → $/visit → × 52 for annual  
+- Or **bottom-up:** # of shops × customers/shop × spend (pick one coherent chain and label assumptions)  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+Example framework (assumptions vary; sanity-check vs ~$50–70B):
+
 ```
 US Population: 330M
 Adults who drink coffee (65%): ~215M
@@ -1329,107 +1480,439 @@ Annual: × 52 = ~$67B
 (Actual US coffee shop market ~$50–70B ✓)
 ```
 
----
-
-**D9.** An airline has 200 seats. Load factor is 78%. Avg ticket price $180. The plane flies 4 flights/day. Daily revenue?
-
-*Answer: 200 × 78% × $180 × 4 = 156 × $180 × 4 = $28,080 × 4 = **$112,320/day***
+</details>
 
 ---
 
-**D10.** At 8% annual interest, how long until an investment doubles?
+**D9. Airline daily revenue on one aircraft**
 
-*Answer: 72 / 8 = **9 years***
+For a single aircraft on a typical operating day:
 
----
+- Seats on the plane: 200  
+- Load factor (seats sold / seats available): 78%  
+- Average ticket price: $180  
+- Number of flights that day: 4  
 
-**D11.** A company wants to double its investment in 6 years. What annual return is needed?
+What is **daily revenue** for this plane (ignore ancillary fees)?
 
-*Answer: 72 / 6 = **12% per year***
+<details>
+<summary>Hint</summary>
 
----
+- **Daily revenue** = Seats × Load factor × Ticket price × Flights per day  
 
-**D12.** Gross margin is 60% on $50M revenue. What's the gross profit? What are COGS?
+</details>
 
-*Answer: Gross profit = $50M × 60% = $30M. COGS = $50M − $30M = **$20M***
+<details>
+<summary>Answer</summary>
 
----
+1. Seats sold per flight = 200 × 0.78 = **156**  
+2. Revenue per flight = 156 × $180 = **$28,080**  
+3. Daily revenue = $28,080 × 4 = **$112,320/day**  
 
-**D13.** A subscription service has 50,000 subscribers at $20/month. Monthly churn rate is 2%. Annual churn?
-
-*Answer: Annual churn = 1 − (1−0.02)^12 = 1 − 0.98^12 ≈ 1 − 0.785 = **~21.5%***
-
----
-
-**D14.** LTV calculation: ARPU $240/yr, gross margin 70%, annual churn 15%.
-
-*Answer: LTV = ($240 × 70%) / 15% = $168 / 0.15 = **$1,120***
-
----
-
-**D15.** A market is $200M today and growing at 5% CAGR. Size in 3 years?
-
-*Answer: $200M × 1.05³ = $200M × 1.157 = **$231M***
+</details>
 
 ---
 
-**D16.** Company A revenue: $120M. Company B: $80M. Combined market is $400M. What's their combined market share?
+**D10. Rule of 72 — time to double**
 
-*Answer: ($120M + $80M) / $400M = $200M / $400M = **50%***
+Money compounds at **8% per year**.
 
----
+Approximately how many years until the principal **doubles**? (Use the Rule of 72.)
 
-**D17.** Fixed costs: $10M. Price per unit: $100. Variable cost per unit: $60. How many units to break even?
+<details>
+<summary>Hint</summary>
 
-*Answer: Contribution margin = $100 − $60 = $40. Break-even = $10M / $40 = **250,000 units***
+- **Rule of 72:** Years to double ≈ 72 ÷ (interest rate in %)  
 
----
+</details>
 
-**D18.** A factory runs 24 hrs/day, 365 days. Max capacity: 1,000 units/day. Actual output: 780 units/day. Utilization rate?
+<details>
+<summary>Answer</summary>
 
-*Answer: 780 / 1,000 = **78%***
+1. Years ≈ 72 ÷ 8 = **9 years**  
 
----
-
-**D19.** EBITDA is $25M. Industry trades at 10× EBITDA. Estimated enterprise value?
-
-*Answer: $25M × 10 = **$250M***
+</details>
 
 ---
 
-**D20.** Spend $2M on marketing, acquire 4,000 new customers. Each generates $200/year. LTV/CAC ratio?
+**D11. Rule of 72 — required return to double in N years**
 
-*Answer: CAC = $2M / 4,000 = $500. LTV (assume 5-yr tenure, no churn model) = $200 × 5 = $1,000. LTV/CAC = **2×** (slightly below 3× target — marginal)*
+A portfolio must **double in 6 years**.
 
----
+What approximate **annual** return is required? (Use the Rule of 72.)
 
-**D21.** Revenue grew from $50M to $75M over 3 years. CAGR?
+<details>
+<summary>Hint</summary>
 
-*Answer: (75/50)^(1/3) − 1 = 1.5^0.333 − 1. Cube root of 1.5: try 1.14^3 = 1.48 ≈ 1.5. **~14.5% CAGR***
+- Rearrange: **Rate (%)** ≈ 72 ÷ years to double  
 
----
+</details>
 
-**D22.** A drug has 10M potential patients, 60% diagnosed, 40% treated, 20% market share, $1,000/yr per patient. Market size?
+<details>
+<summary>Answer</summary>
 
-*Answer: 10M × 60% × 40% × 20% × $1,000 = 10M × 0.048 × $1,000 = **$480M***
+1. Rate ≈ 72 ÷ 6 = **12% per year**  
 
----
-
-**D23.** Operating margin is 15% on $80M revenue. SG&A is $8M. What are COGS as % of revenue?
-
-*Answer: Operating profit = $80M × 15% = $12M. COGS + SG&A = $80M − $12M = $68M. COGS = $68M − $8M = $60M. COGS % = $60M/$80M = **75%***
+</details>
 
 ---
 
-**D24.** Inventory turns = 12. Annual COGS = $60M. What's average inventory?
+**D12. Gross profit and COGS from gross margin**
 
-*Answer: Avg Inventory = COGS / Turns = $60M / 12 = **$5M***
+- Total revenue: $50M  
+- Gross margin: 60% of revenue  
+
+What is **gross profit** in dollars? What is **COGS** (cost of goods sold)?
+
+<details>
+<summary>Hint</summary>
+
+- **Gross profit** = Revenue × Gross margin %  
+- **COGS** = Revenue − Gross profit  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. Gross profit = $50M × 60% = **$30M**  
+2. COGS = $50M − $30M = **$20M**  
+
+</details>
 
 ---
 
-**D25.** A new process saves $3M/year but costs $15M upfront. At a 10% discount rate, what's NPV (perpetuity)?
+**D13. Converting monthly churn to annual churn**
 
-*Answer: PV of savings = $3M / 0.10 = $30M. NPV = $30M − $15M = **$15M** → proceed.*
+A subscription business has **50,000** subscribers at **$20/month**.
+
+- Monthly churn: **2%** of subscribers leave each month (independent months).  
+
+What is the approximate **annual** churn rate (fraction of the starting cohort that has left after 12 months)?
+
+<details>
+<summary>Hint</summary>
+
+- Fraction **still active** after 12 months = (1 − monthly churn)^12  
+- **Annual churn** (share churned within the year) ≈ 1 − that survival rate  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. Survival after 12 months = (1 − 0.02)^12 = 0.98^12 ≈ **0.785**  
+2. Annual churn ≈ 1 − 0.785 = **~21.5%**  
+
+</details>
+
+---
+
+**D14. Customer lifetime value (simple subscription LTV)**
+
+- Average revenue per user (ARPU): **$240/year**  
+- Gross margin on that revenue: **70%**  
+- Annual churn: **15%** (use 1/churn as average customer life in years for a quick LTV)  
+
+What is **LTV** (lifetime value) per customer?
+
+<details>
+<summary>Hint</summary>
+
+- Quick **LTV** ≈ (ARPU × Gross margin %) ÷ Annual churn  
+- (Uses average lifetime ≈ 1/churn years.)  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. Annual gross profit per user = $240 × 70% = **$168**  
+2. LTV ≈ $168 ÷ 0.15 = **$1,120**  
+
+</details>
+
+---
+
+**D15. Market size after CAGR**
+
+- Market size today: **$200M**  
+- Expected CAGR: **5%**  
+
+What is the market size **in 3 years**?
+
+<details>
+<summary>Hint</summary>
+
+- **Future value** after *n* years = Present × (1 + CAGR)^*n*  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. In 3 years: $200M × (1.05)³ = $200M × 1.157625  
+2. ≈ **$231M**  
+
+</details>
+
+---
+
+**D16. Combined market share**
+
+- Company A revenue: **$120M**  
+- Company B revenue: **$80M**  
+- Total addressable market (revenue): **$400M**  
+
+What is **combined** market share of A and B?
+
+<details>
+<summary>Hint</summary>
+
+- **Market share** = Company revenue ÷ Total market (add firms’ revenues for combined share)  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. Combined revenue = $120M + $80M = **$200M**  
+2. Share = $200M ÷ $400M = **50%**  
+
+</details>
+
+---
+
+**D17. Break-even units from price, variable cost, and fixed costs**
+
+A product line has the following economics:
+
+- Annual fixed costs: **$10M**  
+- Selling price per unit: **$100**  
+- Variable cost per unit: **$60**  
+
+How many units must be sold **per year** to break even?
+
+<details>
+<summary>Hint</summary>
+
+- **Contribution margin per unit** = Price − Variable cost per unit  
+- **Break-even units** = Fixed costs ÷ Contribution margin per unit  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. CM per unit = $100 − $60 = **$40**  
+2. Break-even units = $10,000,000 ÷ $40 = **250,000 units**  
+
+</details>
+
+---
+
+**D18. Capacity utilization**
+
+A plant runs **24 hours/day**, **365 days/year**.
+
+- Maximum sustainable output: **1,000 units/day**  
+- Actual average output: **780 units/day**  
+
+What is the **utilization rate** (actual / max capacity)?
+
+<details>
+<summary>Hint</summary>
+
+- **Utilization** = Actual output ÷ Maximum capacity (same time basis)  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. Utilization = 780 ÷ 1,000 = **78%**  
+
+</details>
+
+---
+
+**D19. Enterprise value from EBITDA multiple**
+
+- EBITDA: **$25M**  
+- Comparable companies trade at **10× EBITDA**  
+
+What is the **estimated enterprise value** (using this multiple)?
+
+<details>
+<summary>Hint</summary>
+
+- **EV** (rough, from multiple) = EBITDA × EV/EBITDA multiple  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. EV ≈ $25M × 10 = **$250M**  
+
+</details>
+
+---
+
+**D20. LTV/CAC from a simple acquisition campaign**
+
+- Marketing spend: **$2M**  
+- New customers acquired: **4,000**  
+- Revenue (or contribution, depending on framing) per customer: **$200/year**  
+
+What is **customer acquisition cost (CAC)**? For **LTV**, use a simple **5-year** horizon with **no churn** and **no discounting** (as in the answer). What is **LTV/CAC**?
+
+<details>
+<summary>Hint</summary>
+
+- **CAC** = Marketing spend ÷ New customers  
+- **LTV** (stub): annual $ × assumed years; compare **LTV/CAC** to benchmarks (e.g. ~3×)  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. CAC = $2M ÷ 4,000 = **$500** per customer  
+2. LTV = $200/year × 5 years = **$1,000**  
+3. LTV/CAC = $1,000 ÷ $500 = **2×** (below a common ~3× target — marginal)  
+
+</details>
+
+---
+
+**D21. CAGR over three years**
+
+- Revenue three years ago: **$50M**  
+- Revenue today: **$75M**  
+
+What is the **CAGR** over those 3 years?
+
+<details>
+<summary>Hint</summary>
+
+- **CAGR** = (Ending ÷ Beginning)^(1/years) − 1  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. Ratio = $75M ÷ $50M = **1.5** over 3 years  
+2. CAGR = 1.5^(1/3) − 1 ≈ **14.5%** (since 1.14³ ≈ 1.48 ≈ 1.5)  
+
+</details>
+
+---
+
+**D22. Pharma / medtech market size (funnel)**
+
+A therapy has the following funnel (all rates apply sequentially):
+
+- **10M** potential patients  
+- **60%** are diagnosed  
+- **40%** of diagnosed receive treatment  
+- **20%** market share of treated patients  
+- **$1,000/year** revenue per treated patient on your product  
+
+What is **annual revenue** for this product?
+
+<details>
+<summary>Hint</summary>
+
+- **Revenue** = Pool × (sequential filters) × $ per patient  
+- Multiply: patients × diagnosis × treatment × share × price  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. Treated on your drug = 10M × 0.6 × 0.4 × 0.2 = 10M × **0.048** = **480,000**  
+2. Revenue = 480,000 × $1,000 = **$480M** per year  
+
+</details>
+
+---
+
+**D23. COGS as % of revenue (from operating margin and SG&A)**
+
+- Revenue: **$80M**  
+- Operating margin: **15%** of revenue  
+- SG&A: **$8M**  
+
+Assume a simple P&L: Revenue − COGS − SG&A = Operating profit. What is **COGS as a percentage of revenue**?
+
+<details>
+<summary>Hint</summary>
+
+- Operating profit = Revenue × Operating margin %  
+- COGS = Revenue − SG&A − Operating profit  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. Operating profit = $80M × 15% = **$12M**  
+2. COGS = $80M − $8M − $12M = **$60M**  
+3. COGS % = $60M ÷ $80M = **75%**  
+
+</details>
+
+---
+
+**D24. Average inventory from turns and COGS**
+
+- Inventory turns: **12** (COGS / average inventory, per year)  
+- Annual COGS: **$60M**  
+
+What is **average inventory**?
+
+<details>
+<summary>Hint</summary>
+
+- **Turns** = COGS ÷ Average inventory → rearrange: **Average inventory** = COGS ÷ Turns  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. Average inventory = $60M ÷ 12 = **$5M**  
+
+</details>
+
+---
+
+**D25. NPV of a cost-saving project (perpetuity)**
+
+A process investment costs **$15M** upfront. Once installed, it saves **$3M per year** forever.
+
+- Discount rate: **10%**  
+
+Treat the savings as a **perpetuity**. What is the **NPV** of the project (PV of savings minus upfront cost)? Should you proceed on NPV grounds?
+
+<details>
+<summary>Hint</summary>
+
+- **PV of perpetual savings** = Annual savings ÷ *r*  
+- **NPV** = PV of inflows − Upfront cost  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. PV of savings = $3M ÷ 0.10 = **$30M**  
+2. NPV = $30M − $15M = **$15M** → **proceed** (positive NPV)  
+
+</details>
 
 ---
 
@@ -1947,9 +2430,39 @@ Based on patterns across all 20 casebooks:
 
 ## 22. Additional Drill Problems (From New Casebooks)
 
-**D26.** You're analyzing a bikeshare system. 500 trips/week, 50k bikes, flat terrain, docked system. Bike cost $200, stations hold 20 bikes at $10k each, distribution cost $100/bike. Revenue $1/trip, 50 weeks. Annual profit?
+Same pattern as [§17](#17-drill-bank): **Hint** → **Answer** (expandable).
 
-*Answer:*
+---
+
+**D26. Bikeshare system — annual profit**
+
+You are sizing economics for a **docked** bikeshare (flat terrain).
+
+- **Demand:** 500,000 trips per week (aggregate system)  
+- **Fleet:** 50,000 bikes  
+- **Revenue:** $1 per trip  
+- **Operating calendar:** 50 weeks per year  
+
+**Costs (setup / annualized as given in the drill):**
+
+- Each bike costs **$200**  
+- Stations hold **20 bikes** each; each station slot costs **$10,000**  
+- Distribution cost: **$100 per bike**  
+
+What is **annual profit** under this structure?
+
+<details>
+<summary>Hint</summary>
+
+- **Revenue** = $/trip × trips/week × weeks/year  
+- **Costs:** bike purchase × fleet; stations = (# bikes ÷ bikes per station) × cost per station; plus distribution $/bike × fleet  
+- **Profit** = Revenue − sum of costs  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
 ```
 Revenue = $1 × 500K × 50 = $25M
 Bike cost = $200 × 50K = $10M
@@ -1958,22 +2471,65 @@ Dist = $100 × 50K = $5M
 Profit = $25M − $10M − $25M − $5M = −$15M (loss — dockless would save $25M on stations)
 ```
 
+</details>
+
 ---
 
-**D27.** Dark Sky sells 50 Assessors at $110k. New JointBird: 90 units at $180k, 90% cannibalization. Net revenue with JointBird vs. without?
+**D27. Cannibalization — net revenue impact**
 
-*Answer:*
+**Baseline:** Dark Sky sells **50** “Assessor” units at **$110k** each.
+
+**Launch:** It introduces **JointBird**: **90** units at **$180k** each. **90%** of JointBird sales **cannibalize** Assessor sales (each JointBird sale displaces an Assessor that would otherwise have sold).
+
+Compare **total revenue with JointBird** to **total revenue without JointBird**. What is the **net change** in revenue?
+
+<details>
+<summary>Hint</summary>
+
+- **Without:** 50 × Assessor price  
+- **With 90% cannibalization** of the Assessor line: remaining Assessor units = 50 × (1 − 0.9) = **5**  
+- **Plus** JointBird: 90 × $180k — **total “with”** = Assessor revenue + JointBird revenue  
+- **Net change** = Revenue with − Revenue without  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
 ```
 Without: 50 × $110K = $5.5M
 With: (5 × $110K) + (90 × $180K) = $550K + $16.2M = $16.75M
 Net increase: +$11.25M
 ```
 
+(90% cannibalization leaves **5** Assessor units: 50 × 10%.)
+
+</details>
+
 ---
 
-**D28.** Health insurance payer: 400,000 members in 65+ lifestyle segment. PMPM = $1,200. 5% savings from DM program. Coach costs $72k/year, handles 200 patients. Total annual net savings?
+**D28. Disease management — net savings for a payer**
 
-*Answer:*
+A health plan has **400,000 members** in a **65+ lifestyle** segment.
+
+- Medical cost: **$1,200 per member per month (PMPM)**  
+- A disease-management (DM) program reduces medical spend by **5%** for members who participate  
+- Each **coach** costs **$72k/year** and manages **200** patients  
+
+Assume all members in the segment can be reached and coached as needed. What are **total annual net savings** (savings minus coach costs)?
+
+<details>
+<summary>Hint</summary>
+
+- Annual medical cost per member = PMPM × 12  
+- **Gross savings per coach cohort** = members per coach × annual cost × savings %  
+- **Net per coach** = Gross savings − coach cost; multiply by **# coaches** = members ÷ panel size  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
 ```
 Savings per coach = $1,200 × 12 × 5% × 200 = $144K
 Net per coach = $144K − $72K = $72K
@@ -1981,22 +2537,70 @@ Coaches needed = 400K / 200 = 2,000
 Total savings = 2,000 × $72K = $144M
 ```
 
+</details>
+
 ---
 
-**D29.** Events.com: $595M in payment volume, 7.9M registrations, $39.9M revenue. What is the average registration price? Average fee rate?
+**D29. Events.com — implied price and take rate**
 
-*Answer:*
+You are given:
+
+- **Payment volume** processed through the platform: **$595M**  
+- **Registrations:** **7.9M**  
+- **Company revenue** (fees to Events.com): **$39.9M**  
+
+What is the **average registration price** (payment volume per registration)? What is the **average fee rate** (company revenue ÷ payment volume)?
+
+<details>
+<summary>Hint</summary>
+
+- **Avg registration price** = Payment volume ÷ Registrations  
+- **Take rate / fee rate** = Company revenue ÷ Payment volume  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
 ```
 Avg price = $595M / 7.9M = ~$75/registration
 Avg fee rate = $39.9M / $595M = 6.7%
 (Down from 10% in 2017 due to pricing change)
 ```
 
+</details>
+
 ---
 
-**D30.** DigiBooks: Occasional Reader segment (20M people). Retail channel: 50% reach, 40% penetration. 10 books/year at $10 each with 50% margin. Tablet at $100 with 30% margin. Overhead $20M. Channel profit?
+**D30. DigiBooks — channel profit for “Occasional Reader”**
 
-*Answer:*
+**Segment:** **20M** people classified as Occasional Readers.
+
+**Retail channel funnel:**
+
+- **Reach:** 50% of segment  
+- **Penetration** (of reached): 40% buy through this channel  
+
+**Per active customer in the channel (annual):**
+
+- **10 e-books** at **$10** each, **50%** contribution margin on e-books  
+- **1 tablet** at **$100**, **30%** margin on hardware  
+
+**Fixed overhead** allocated to this channel: **$20M/year**
+
+What is **annual channel profit** (contribution minus overhead)?
+
+<details>
+<summary>Hint</summary>
+
+- **Active customers** = Segment × Reach × Penetration  
+- **Contribution** = Customers × (e-book margin stream + tablet margin); subtract **overhead**  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
 ```
 Addressable customers = 20M × 50% × 40% = 4M
 E-book contribution = 10 × $10 × 50% × 4M = $200M
@@ -2004,32 +2608,93 @@ Tablet contribution = $100 × 30% × 4M = $120M
 Gross = $320M − $20M = $300M
 ```
 
+</details>
+
 ---
 
-**D31.** Price elasticity: You raise price 8%. Quantity falls 20%. Should you raise the price?
+**D31. Price elasticity — should you raise price?**
 
-*Answer:*
+After an **8%** price increase, **quantity sold falls by 20%**.
+
+- Compute implied **price elasticity of demand** (roughly: %ΔQ / %ΔP).  
+- Given revenue ≈ P × Q, **should you** have raised price?
+
+<details>
+<summary>Hint</summary>
+
+- **Elasticity** ≈ (% change in quantity) ÷ (% change in price)  
+- If demand is elastic, revenue moves **with** quantity; check direction of **total revenue** change  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
 ```
 Elasticity = −20% / +8% = −2.5 → highly elastic
 Revenue change: +8% price × −20% volume = net −13.6% → do NOT raise price
 ```
 
+</details>
+
 ---
 
-**D32.** Drug development: Phase success rates 80% / 30% / 30%. Value if approved $3B. Cost $400M. EV?
+**D32. Drug development — expected value**
 
-*Answer:*
+A drug must pass **three** independent phases in sequence. Success probabilities:
+
+- Phase 1: **80%**  
+- Phase 2: **30%** (conditional on passing Phase 1)  
+- Phase 3: **30%** (conditional on passing Phase 2)  
+
+If approved, **NPV value = $3B**. Upfront development cost is **$400M**.
+
+What is the **expected value (EV)** of the program? Should you develop alone based on this EV?
+
+<details>
+<summary>Hint</summary>
+
+- **P(approval)** = product of phase success rates (sequential)  
+- **EV** = P(approval) × Value if approved − Upfront cost  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
 ```
 P(approval) = 80% × 30% × 30% = 7.2%
 EV = 7.2% × $3B − $400M = $216M − $400M = −$184M
 Negative NPV → don't develop alone. Need partnership or licensing deal.
 ```
 
+</details>
+
 ---
 
-**D33.** Keyboard market 2022: 6M units total. Mechanical 25% share at $150, Membrane 30% at $100, Ergonomic 45% at $200. Total market size?
+**D33. Keyboard market — total revenue by segment**
 
-*Answer:*
+**2022 keyboard market (units):** **6M** total.
+
+| Segment   | Share of units | Avg price / unit |
+|-----------|------------------|------------------|
+| Mechanical | 25%            | $150             |
+| Membrane   | 30%            | $100             |
+| Ergonomic  | 45%            | $200             |
+
+What is **total market revenue** (sum of segment revenues)?
+
+<details>
+<summary>Hint</summary>
+
+- For each segment: **Units** = Total units × segment share; **Revenue** = Units × price  
+- Sum the three segment revenues  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
 ```
 Mechanical: 6M × 25% × $150 = $225M
 Membrane:   6M × 30% × $100 = $180M
@@ -2037,17 +2702,61 @@ Ergonomic:  6M × 45% × $200 = $540M
 Total = $945M
 ```
 
----
-
-**D34.** Insurance commissions: $25/agent/month × 500,000 agents × 12 months = ?
-
-*Answer: $150,000,000 ($150M)*
+</details>
 
 ---
 
-**D35.** General agency activities cost $30M internally. 500,000 members, 12 months. Max per-member-per-month fee?
+**D34. Insurance — total annual commissions**
 
-*Answer: $30M / (500K × 12) = $5/member/month*
+Commission structure:
+
+- **$25** per agent **per month**  
+- **500,000** agents  
+
+What is **total annual commission** (remember to annualize monthly pay)?
+
+<details>
+<summary>Hint</summary>
+
+- **Annual** $ per agent = Monthly × 12  
+- **Total** = Annual per agent × Number of agents  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. Per agent per year = $25 × 12 = **$300**  
+2. Total = $300 × 500,000 = **$150,000,000 ($150M)**  
+
+</details>
+
+---
+
+**D35. Allocating fixed cost to PMPM**
+
+**General agency** internal cost: **$30M** per year.
+
+- **500,000** members  
+- Allocate this cost evenly across **12** months  
+
+What is the **maximum** uniform **per-member-per-month** fee that exactly recovers this $30M? (Treat as break-even allocation.)
+
+<details>
+<summary>Hint</summary>
+
+- **Total member-months** per year = Members × 12  
+- **Fee per member-month** = Total annual cost ÷ Total member-months  
+
+</details>
+
+<details>
+<summary>Answer</summary>
+
+1. Member-months = 500,000 × 12 = **6M**  
+2. Fee = $30M ÷ 6M = **$5 per member per month**  
+
+</details>
 
 ---
 
