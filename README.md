@@ -1,8 +1,16 @@
 # Road to MBB
 
-MBA consulting casebook collection — 20 casebooks (updated 2025).
+I built this for my girlfriend while she recruits for MBB consulting, and she uses it
+regularly. It started as a casebook library — 20 MBA casebooks collected in one place and
+extracted to plain text so finding a case by industry or concept takes seconds instead of
+flipping PDFs — and grew a **Case Math Drill** web app: gamified mental-math practice with
+per-topic progress tracking (Supabase auth + persistence).
 
-Source: [Hacking the Case Interview](https://www.hackingthecaseinterview.com/pages/mba-consulting-casebooks)
+Casebook source: [Hacking the Case Interview](https://www.hackingthecaseinterview.com/pages/mba-consulting-casebooks)
+
+**Roadmap:** embeddings search over the extracted case text, so you can ask for "market
+sizing cases about airlines" and get the right chapter.
+
 
 ## Casebooks
 
