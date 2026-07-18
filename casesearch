@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# casesearch - fast full-text search across the casebook collection.
+# Usage:
+#   ./casesearch "growth strategy"        # case-insensitive substring/regex search
+#   ./casesearch -i "M&A"                 # already default; -i kept for clarity
+#   ./casesearch "profitability" Wharton  # restrict to books matching a name
+# Reports: <School> p<page>: <matching line>
+# Page number = PDF page (pdftotext separates pages with form-feed \f).
+
+INDEX="$HOME/casebooks/.index"
+PATTERN="$1"
+FILTER="$2"
+
+if [ -z "$PATTERN" ]; then
+  echo "usage: casesearch \"pattern\" [school-filter]" >&2
+  exit 1
+fi
+
+shopt -s nullglob
+for f in "$INDEX"/*.txt; do
+  name="$(basename "$f" .txt)"
+  if [ -n "$FILTER" ]; then
+    name_lc="$(printf '%s' "$name" | tr '[:upper:]' '[:lower:]')"
+    filter_lc="$(printf '%s' "$FILTER" | tr '[:upper:]' '[:lower:]')"
+    case "$name_lc" in
+      *"$filter_lc"*) ;;
+      *) continue ;;
+    esac
+  fi
+  awk -v IGNORECASE=1 -v pat="$PATTERN" -v school="$name" '
+    BEGIN { page = 1 }
+    {
+      n = gsub(/\f/, "")          # count + strip form-feeds on this line
+      if ($0 ~ pat) {
+        line = $0
+        gsub(/^[ \t]+/, "", line)
+        if (length(line) > 200) line = substr(line, 1, 200) "..."
+        if (length(line) > 0)
+          printf "%-32s p%-4d %s\n", school, page, line
+      }
+      page += n
+    }
+  ' "$f"
+done

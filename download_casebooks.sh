@@ -1,6 +1,8 @@
 #!/bin/bash
+# Downloads all 20 casebook PDFs into casebooks/.
 
-mkdir -p /root/projects/roadtombb/casebooks
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+mkdir -p "$ROOT/casebooks"
 
 declare -A BOOKS=(
   ["Anderson_2020"]="https://files.cdn.thinkific.com/file_uploads/163260/attachments/61d/b06/b36/Anderson_2020.pdf"
@@ -28,7 +30,7 @@ declare -A BOOKS=(
 FAILED=()
 
 for NAME in "${!BOOKS[@]}"; do
-  DIR="/root/projects/roadtombb/casebooks/$NAME"
+  DIR="$ROOT/casebooks/$NAME"
   mkdir -p "$DIR"
   URL="${BOOKS[$NAME]}"
   echo "Downloading $NAME..."
@@ -37,15 +39,15 @@ for NAME in "${!BOOKS[@]}"; do
     echo "  ✓ $NAME ($SIZE)"
   else
     echo "  ✗ FAILED: $NAME"
-    FAILED+=("$NAME — $URL")
+    FAILED+=("$NAME $URL")
     rm -f "$DIR/$NAME.pdf"
   fi
 done
 
 echo ""
 if [ ${#FAILED[@]} -gt 0 ]; then
-  printf '%s\n' "${FAILED[@]}" > /root/projects/roadtombb/failed_downloads.txt
-  echo "Failed: ${#FAILED[@]} — see failed_downloads.txt"
+  printf '%s\n' "${FAILED[@]}" > "$ROOT/failed_downloads.txt"
+  echo "Failed: ${#FAILED[@]}, see failed_downloads.txt"
 else
   echo "All downloads succeeded."
 fi
