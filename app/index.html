@@ -1,759 +1,477 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Case Math Drill — Road to MBB</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<title>Case Math Drill</title>
+<meta name="description" content="Timed mental math practice for case interviews."/>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #0f0f13;
-    --surface: #16161e;
-    --surface2: #1e1e2a;
-    --border: #2a2a3a;
-    --blue: #4f8ef7;
-    --blue-dim: #1e3a6e;
-    --green: #22c55e;
-    --green-dim: #14532d;
-    --red: #ef4444;
-    --red-dim: #450a0a;
-    --yellow: #f59e0b;
-    --text: #f1f1f5;
-    --muted: #888899;
-    --radius: 12px;
-    --content-max: 1180px;
-  }
-
-  body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px clamp(16px, 4vw, 40px) 60px;
-  }
-
-  /* ── Header ── */
-  .header {
-    width: 100%;
-    max-width: var(--content-max);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 12px 0;
-  }
-  .logo { font-size: 14px; font-weight: 700; color: var(--blue); letter-spacing: 0.05em; }
-  .level-badge {
-    background: var(--blue-dim);
-    color: var(--blue);
-    font-size: 12px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 20px;
-    border: 1px solid var(--blue);
-  }
-
-  /* ── XP Bar ── */
-  .xp-section {
-    width: 100%;
-    max-width: var(--content-max);
-    margin-bottom: 24px;
-  }
-  .xp-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
-  .xp-bar-bg {
-    width: 100%;
-    height: 6px;
-    background: var(--surface2);
-    border-radius: 99px;
-    overflow: hidden;
-  }
-  .xp-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--blue), #7c3aed);
-    border-radius: 99px;
-    transition: width 0.4s ease;
-  }
-
-  /* ── Stats Row ── */
-  .stats-row {
-    width: 100%;
-    max-width: var(--content-max);
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 28px;
-  }
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 10px 12px;
-    text-align: center;
-  }
-  .stat-value {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--text);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
-
-  /* ── Question Card ── */
-  .question-card {
-    width: 100%;
-    max-width: var(--content-max);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 32px 28px;
-    box-shadow: 0 0 40px rgba(79, 142, 247, 0.07);
-    transition: box-shadow 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-  .question-card.flash-correct { animation: flashGreen 0.5s ease; }
-  .question-card.flash-wrong   { animation: flashRed 0.5s ease; }
-
-  @keyframes flashGreen {
-    0%,100% { box-shadow: 0 0 40px rgba(79,142,247,0.07); }
-    50% { box-shadow: 0 0 60px rgba(34,197,94,0.4); border-color: var(--green); }
-  }
-  @keyframes flashRed {
-    0%,100% { box-shadow: 0 0 40px rgba(79,142,247,0.07); }
-    50% { box-shadow: 0 0 60px rgba(239,68,68,0.4); border-color: var(--red); }
-  }
-
-  .q-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-  .q-top-left {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    min-width: 0;
-  }
-  .category-badge {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 20px;
-    letter-spacing: 0.04em;
-  }
-  .difficulty-chip {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 3px 9px;
-    border-radius: 12px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    flex-shrink: 0;
-  }
-  .difficulty-chip.easy {
-    color: var(--green);
-    border: 1px solid var(--green-dim);
-    background: rgba(34, 197, 94, 0.12);
-  }
-  .difficulty-chip.medium {
-    color: var(--yellow);
-    border: 1px solid #78350f;
-    background: rgba(245, 158, 11, 0.12);
-  }
-  .difficulty-chip.hard {
-    color: var(--red);
-    border: 1px solid var(--red-dim);
-    background: rgba(239, 68, 68, 0.12);
-  }
-  .difficulty-chip.fallback {
-    color: var(--muted);
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    text-transform: none;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-  }
-  .timer {
-    font-size: 13px;
-    color: var(--muted);
-    font-variant-numeric: tabular-nums;
-  }
-  .timer.fast { color: var(--yellow); }
-
-  .question-text {
-    font-size: clamp(22px, 2.2vw, 28px);
-    font-weight: 700;
-    line-height: 1.45;
-    color: var(--text);
-    margin-bottom: 14px;
-    text-align: left;
-    white-space: pre-line;
-    width: 100%;
-  }
-  .hint-details {
-    width: 100%;
-    margin: 0 0 20px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface2);
-    padding: 0;
-  }
-  .hint-details summary {
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--blue);
-    padding: 10px 14px;
-    list-style: none;
-  }
-  .hint-details summary::-webkit-details-marker { display: none; }
-  .hint-details .hint-body {
-    font-size: 14px;
-    color: var(--text);
-    line-height: 1.5;
-    padding: 0 14px 12px;
-    border-top: 1px solid var(--border);
-    margin-top: 0;
-    padding-top: 10px;
-  }
-
-  .answer-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto;
-    gap: 10px;
-    align-items: stretch;
-  }
-  @media (max-width: 540px) {
-    .answer-row {
-      grid-template-columns: 1fr;
-    }
-    .answer-row .btn { width: 100%; }
-  }
-  .answer-input {
-    min-width: 0;
-    min-height: 48px;
-    background: var(--surface2);
-    border: 2px solid var(--border);
-    color: var(--text);
-    font-size: 20px;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
-    padding: 10px 16px;
-    border-radius: var(--radius);
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .answer-input:focus { border-color: var(--blue); }
-  .answer-input::placeholder { color: var(--border); }
-
-  .btn {
-    padding: 12px 20px;
-    border-radius: var(--radius);
-    font-size: 15px;
-    font-weight: 700;
-    font-family: 'Inter', sans-serif;
-    cursor: pointer;
-    border: none;
-    transition: transform 0.1s, opacity 0.2s;
-  }
-  .btn:active { transform: scale(0.97); }
-  .btn-primary { background: var(--blue); color: #fff; }
-  .btn-skip { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
-  .answer-row .btn {
-    padding: 0 22px;
-    min-height: 48px;
-    border: 1px solid transparent;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-  }
-  .answer-row .btn-primary { border-color: var(--blue); }
-  .answer-row .btn-skip { border-color: var(--border); }
-  .btn-next { background: var(--green); color: #fff; width: 100%; margin-top: 16px; font-size: 16px; padding: 14px; }
-
-  /* ── Feedback Panel ── */
-  .feedback-panel {
-    margin-top: 20px;
-    padding: 16px;
-    border-radius: var(--radius);
-    display: none;
-  }
-  .feedback-panel.show { display: block; }
-  .feedback-panel.correct { background: var(--green-dim); border: 1px solid var(--green); }
-  .feedback-panel.wrong   { background: var(--red-dim);   border: 1px solid var(--red);   }
-
-  .feedback-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-  .feedback-panel.correct .feedback-header { color: var(--green); }
-  .feedback-panel.wrong   .feedback-header { color: var(--red); }
-
-  .xp-gained {
-    background: rgba(79,142,247,0.15);
-    color: var(--blue);
-    font-size: 12px;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-left: auto;
-  }
-
-  .solution {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-  .solution strong { color: var(--text); }
-
-  /* ── Streak Banner ── */
-  .streak-banner {
-    display: none;
-    background: linear-gradient(90deg, #92400e, #78350f);
-    border: 1px solid var(--yellow);
-    color: var(--yellow);
-    font-size: 14px;
-    font-weight: 700;
-    padding: 8px 16px;
-    border-radius: 20px;
-    text-align: center;
-    margin-top: 12px;
-  }
-  .streak-banner.show { display: block; }
-
-  /* ── Level Up Modal ── */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-overlay.show { display: flex; }
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--blue);
-    border-radius: 20px;
-    padding: 40px 32px;
-    text-align: center;
-    max-width: 360px;
-    width: 90%;
-    box-shadow: 0 0 80px rgba(79,142,247,0.3);
-    animation: popIn 0.3s ease;
-  }
-  @keyframes popIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to   { transform: scale(1);   opacity: 1; }
-  }
-  .modal-emoji { font-size: 56px; margin-bottom: 12px; }
-  .modal-title { font-size: 28px; font-weight: 900; color: var(--blue); margin-bottom: 6px; }
-  .modal-subtitle { font-size: 15px; color: var(--muted); margin-bottom: 24px; }
-  .modal-new-level { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
-  .modal-btn { background: var(--blue); color: #fff; padding: 12px 32px; border-radius: var(--radius); font-size: 15px; font-weight: 700; cursor: pointer; border: none; }
-
-  /* ── Locked overlay ── */
-  .locked-card {
-    width: 100%;
-    max-width: var(--content-max);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 40px 28px;
-    text-align: center;
-    display: none;
-  }
-  .locked-card.show { display: block; }
-  .locked-icon { font-size: 40px; margin-bottom: 12px; }
-  .locked-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
-  .locked-desc { font-size: 14px; color: var(--muted); }
-
-  /* ── Catalog (roadmap) ── */
-  .catalog-view {
-    width: 100%;
-    max-width: var(--content-max);
-    margin-bottom: 24px;
-  }
-  .catalog-root {
-    width: 100%;
-    min-width: 0;
-  }
-  .catalog-heading {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--text);
-    margin-bottom: 8px;
-  }
-  .catalog-sub {
-    font-size: 14px;
-    color: var(--muted);
-    margin-bottom: 16px;
-    line-height: 1.45;
-  }
-  .catalog-random-btn {
-    width: 100%;
-    margin-bottom: 20px;
-    padding: 14px 20px;
-    font-size: 15px;
-  }
-  .catalog-sections {
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-    width: 100%;
-    min-width: 0;
-  }
-  .catalog-section {
-    width: 100%;
-    min-width: 0;
-  }
-  .catalog-section-head {
-    margin-bottom: 12px;
-  }
-  .catalog-section-title {
-    font-size: 15px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--muted);
-    margin: 0 0 6px 0;
-  }
-  .catalog-section-blurb {
-    font-size: 14px;
-    color: var(--muted);
-    margin: 0;
-    line-height: 1.5;
-    opacity: 0.92;
-  }
-  .catalog-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 12px;
-    width: 100%;
-    min-width: 0;
-  }
-  .catalog-card {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-    padding: 12px 14px;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    cursor: pointer;
-    font-family: 'Inter', sans-serif;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .catalog-card:hover {
-    border-color: var(--blue);
-    background: var(--surface2);
-  }
-  .catalog-rank {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--blue);
-    letter-spacing: 0.06em;
-    margin-bottom: 4px;
-  }
-  .catalog-name {
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.25;
-    margin-bottom: 6px;
-  }
-  .catalog-progress {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--blue);
-    font-variant-numeric: tabular-nums;
-    margin-top: auto;
-  }
-  .catalog-meta {
-    font-size: 10px;
-    color: var(--muted);
-    line-height: 1.3;
-  }
-
-  /* ── Drill view ── */
-  .drill-view {
-    width: 100%;
-    max-width: var(--content-max);
-  }
-  .drill-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 16px;
-  }
-  .drill-back {
-    flex-shrink: 0;
-  }
-  .drill-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--muted);
-    flex: 1;
-    text-align: right;
-  }
-
-  /* ── Auth UI ── */
-  .auth-area {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .btn-auth {
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
-    cursor: pointer;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    transition: all 0.2s;
-  }
-  .btn-auth:hover { border-color: var(--blue); background: var(--surface2); }
-  .user-pill {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: var(--muted);
-  }
-  .user-pill .email { max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .btn-signout {
-    padding: 6px 12px;
-    font-size: 11px;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: 'Inter', sans-serif;
-  }
-  .btn-signout:hover { color: var(--red); border-color: var(--red); }
-  .auth-banner {
-    width: 100%;
-    max-width: var(--content-max);
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 10px 16px;
-    margin-bottom: 16px;
-    font-size: 13px;
-    color: var(--muted);
-    display: none;
-  }
-  .auth-banner.show { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-
-  /* Auth modal */
-  .auth-modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-  }
-  .auth-modal-overlay.show { display: flex; }
-  .auth-modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px;
-    width: 100%;
-    max-width: 360px;
-  }
-  .auth-modal h3 { font-size: 18px; margin-bottom: 20px; color: var(--text); }
-  .auth-form input {
-    width: 100%;
-    background: var(--surface2);
-    border: 2px solid var(--border);
-    color: var(--text);
-    font-size: 15px;
-    padding: 12px 14px;
-    border-radius: var(--radius);
-    margin-bottom: 12px;
-    font-family: 'Inter', sans-serif;
-  }
-  .auth-form input:focus { outline: none; border-color: var(--blue); }
-  .auth-form .btn-row { display: flex; gap: 10px; margin-top: 16px; }
-  .auth-form .btn-row button { flex: 1; }
-  .auth-form .auth-error { font-size: 13px; color: var(--red); margin-bottom: 10px; }
-  .auth-form .auth-toggle { font-size: 13px; color: var(--muted); margin-top: 16px; }
-  .auth-form .auth-toggle a { color: var(--blue); cursor: pointer; }
-
-  @media (max-width: 520px) {
-    .question-text { font-size: 20px; }
-    .stats-row { grid-template-columns: repeat(2, 1fr); }
-    .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  @media (max-width: 360px) {
-    .catalog-grid { grid-template-columns: 1fr; }
-  }
+:root{
+  --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --tp:#1d1d1f;--ts:#6e6e73;--tt:#a1a1a6;
+  --bg0:#faf9f7;--bg1:#ffffff;--bg2:#f2f1ef;--bd:#e5e4e1;
+  --r-md:8px;--r-lg:14px;
+  --ok-bg:#E1F5EE;--ok-tx:#085041;--no-bg:#FDECEA;--no-tx:#B71C1C;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--bg0);}
+body{min-height:100vh;color:var(--tp);font-family:var(--font-sans);}
+.w{padding:1.5rem 1.25rem 3rem;max-width:640px;margin:0 auto;}
+button{font-family:inherit;cursor:pointer;border:0.5px solid var(--bd);background:var(--bg1);color:var(--tp);border-radius:var(--r-md);font-weight:500;transition:background .15s;}
+button:hover{background:var(--bg2);}
+input{font-family:inherit;border:0.5px solid var(--bd);border-radius:var(--r-md);padding:10px 12px;background:var(--bg1);color:var(--tp);}
+input:focus{outline:none;border-color:#1d1d1f;box-shadow:0 0 0 2px #1d1d1f22;}
+.tb{display:flex;align-items:center;gap:12px;margin-bottom:1.25rem;}
+.st{font-size:28px;font-weight:500;min-width:68px;font-variant-numeric:tabular-nums;}
+.st.w2{color:#BA7517;}.st.w3{color:#E24B4A;}
+.pw{flex:1;background:var(--bg2);border-radius:4px;height:6px;overflow:hidden;}
+.pb{height:6px;border-radius:4px;background:#1D9E75;}
+.qc{font-size:13px;color:var(--ts);white-space:nowrap;}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.25rem;}
+.sc{background:var(--bg2);border-radius:var(--r-md);padding:0.75rem;text-align:center;}
+.sv{font-size:20px;font-weight:500;}
+.sl{font-size:11px;color:var(--ts);margin-top:2px;}
+.bdg{display:inline-block;font-size:11px;padding:3px 10px;border-radius:99px;margin-bottom:0.5rem;}
+.bwa{background:#EEEDFE;color:#3C3489;}.bpc{background:#E1F5EE;color:#085041;}
+.brv{background:#FAEEDA;color:#633806;}.bbe{background:#E6F1FB;color:#0C447C;}
+.bca{background:#FBEAF0;color:#72243E;}.bpb{background:#FEF3E2;color:#7A4100;}
+.bmm{background:#FBEAF0;color:#72243E;}.broi{background:#E8F5E0;color:#2D5016;}
+.bcu{background:#FFF0E0;color:#8A4500;}.bpv{background:#E3F2FD;color:#0D47A1;}
+.bit{background:#F3E5F5;color:#6A1B9A;}.bmu{background:#F1EFE8;color:#444441;}
+.bch{background:#FFEBEE;color:#B71C1C;}.bltv{background:#E0F2F1;color:#00695C;}
+.bbr{background:#FFF3E0;color:#E65100;}.bgp{background:#E8EAF6;color:#1A237E;}
+.bft{background:#FCE4EC;color:#880E4F;}.bms{background:#E1F5EE;color:#04342C;}
+.bsh{background:#E6F1FB;color:#042C53;}.bdv{background:#F1EFE8;color:#2C2C2A;}
+.qcard{background:var(--bg1);border:0.5px solid var(--bd);border-radius:var(--r-lg);padding:1.75rem 1.5rem;text-align:center;margin-bottom:1rem;}
+.qt{font-size:18px;font-weight:500;line-height:1.5;margin-bottom:0.5rem;white-space:pre-line;}
+.qs{font-size:13px;color:var(--ts);}
+.ptw{background:var(--bg2);border-radius:4px;height:3px;margin-bottom:1rem;overflow:hidden;}
+.ptb{height:3px;border-radius:4px;background:#1D9E75;}
+.fb{min-height:44px;display:flex;align-items:center;justify-content:center;border-radius:var(--r-md);margin-bottom:1rem;font-size:14px;font-weight:500;padding:0 12px;text-align:center;}
+.fb.ok{background:var(--ok-bg);color:var(--ok-tx);}
+.fb.no{background:var(--no-bg);color:var(--no-tx);}
+.fb.mt{opacity:0;}
+.ir{display:flex;gap:8px;margin-bottom:0.75rem;}
+.ir input{flex:1;font-size:16px;text-align:center;}
+.ir button{padding:0 20px;}
+.hl{font-size:12px;color:var(--tt);cursor:pointer;text-align:center;margin-bottom:0.75rem;text-decoration:underline;}
+.hb{background:var(--bg2);border-radius:var(--r-md);padding:0.75rem 1rem;font-size:13px;color:var(--ts);margin-bottom:1rem;line-height:1.6;display:none;}
+.hb.on{display:block;}
+.nb{width:100%;padding:10px;font-size:14px;margin-bottom:0.5rem;}
+.ss{text-align:center;padding:2rem 0 0;}
+.sti{font-size:26px;font-weight:500;margin-bottom:0.4rem;}
+.su{font-size:14px;color:var(--ts);margin-bottom:1.5rem;line-height:1.7;}
+.seg{display:inline-flex;border:0.5px solid var(--bd);border-radius:99px;overflow:hidden;margin-bottom:1.5rem;background:var(--bg1);}
+.seg button{border:none;border-radius:0;padding:8px 22px;font-size:14px;color:var(--ts);}
+.seg button.on{background:#1d1d1f;color:#fff;}
+.pills{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:1.5rem;}
+.pill{font-size:12px;padding:5px 12px;border-radius:99px;background:var(--bg1);color:var(--tp);border:0.5px solid var(--bd);cursor:pointer;user-select:none;}
+.pill .ac{color:var(--tt);font-variant-numeric:tabular-nums;}
+.pill.off{opacity:0.35;}
+.sbtn{padding:12px 40px;font-size:16px;background:#1d1d1f;color:#fff;border:none;border-radius:99px;}
+.sbtn:hover{background:#333;}
+.lt{font-size:12px;color:var(--tt);margin-top:1.25rem;}
+.rs{font-size:11px;color:var(--tt);text-decoration:underline;cursor:pointer;margin-top:0.75rem;display:inline-block;}
+.ds{text-align:center;padding:2rem 0;}
+.dt{font-size:24px;font-weight:500;margin-bottom:0.5rem;}
+.du{font-size:14px;color:var(--ts);margin-bottom:1.5rem;}
+.dg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:1.5rem;}
+.dsc{background:var(--bg2);border-radius:var(--r-md);padding:1rem;}
+.dv{font-size:26px;font-weight:500;}
+.dl{font-size:12px;color:var(--ts);margin-top:4px;}
+.bkd{background:var(--bg1);border:0.5px solid var(--bd);border-radius:var(--r-lg);padding:1rem 1.25rem;text-align:left;margin-bottom:1rem;}
+.brow{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:0.5px solid var(--bd);font-size:13px;}
+.brow:last-child{border-bottom:none;}
+.blb{color:var(--ts);}.bvl{font-weight:500;}
 </style>
 </head>
 <body>
+<div class="w" id="app">
 
-<!-- Header -->
-<div class="header">
-  <div class="logo">🧮 ROAD TO MBB</div>
-  <div class="auth-area" id="authArea">
-    <button class="btn-auth" id="btnSignIn" onclick="openAuthModal()" style="display:none">Sign in</button>
-    <div class="user-pill" id="userPill" style="display:none">
-      <span class="email" id="userEmail"></span>
-      <button class="btn-signout" onclick="signOut()">Sign out</button>
-    </div>
+<div id="SS" class="ss">
+  <div class="sti">Case Math Drill</div>
+  <div class="su">Timed mental math for case interviews. Tap a topic to include or drop it, pick a length, go.</div>
+  <div class="seg" id="SEG">
+    <button data-m="5" onclick="setLen(5)">5 min</button>
+    <button data-m="15" onclick="setLen(15)">15 min</button>
+    <button data-m="30" onclick="setLen(30)">30 min</button>
   </div>
-  <div class="level-badge" id="levelBadge">Topics</div>
+  <div class="pills" id="PILLS"></div>
+  <button class="sbtn" onclick="go()">Start session</button>
+  <div class="lt" id="LT"></div>
+  <div><span class="rs" onclick="wipe()">reset all stats</span></div>
 </div>
 
-<!-- Auth banner (guests) -->
-<div class="auth-banner" id="authBanner">
-  <span>Sign in to save your progress across devices</span>
-  <button class="btn-auth" onclick="openAuthModal()">Sign in</button>
+<div id="DA" style="display:none;">
+  <div class="tb">
+    <div class="st" id="ST">15:00</div>
+    <div class="pw"><div class="pb" id="PB" style="width:100%"></div></div>
+    <div class="qc" id="QC">Q 1</div>
+  </div>
+  <div class="sg">
+    <div class="sc"><div class="sv" id="sA">0</div><div class="sl">answered</div></div>
+    <div class="sc"><div class="sv" id="sC">0</div><div class="sl">correct</div></div>
+    <div class="sc"><div class="sv" id="sP">&mdash;</div><div class="sl">accuracy</div></div>
+    <div class="sc"><div class="sv" id="sT">&mdash;</div><div class="sl">avg sec</div></div>
+  </div>
+  <div style="text-align:center;margin-bottom:0.5rem;"><span class="bdg" id="BD">&mdash;</span></div>
+  <div class="qcard"><div class="qt" id="QT"></div><div class="qs" id="QS"></div></div>
+  <div class="ptw"><div class="ptb" id="PTB" style="width:100%"></div></div>
+  <div class="fb mt" id="FB"></div>
+  <div class="ir">
+    <input type="text" inputmode="decimal" id="AI" placeholder="Your answer" autocomplete="off"/>
+    <button onclick="chk()">Check</button>
+  </div>
+  <div class="hl" onclick="document.getElementById('HB').classList.toggle('on')">show method hint</div>
+  <div class="hb" id="HB"></div>
+  <button class="nb" onclick="nxt()">Next &nbsp;&#8629;</button>
+  <div style="text-align:center;"><span class="rs" onclick="endS()">end session early</span></div>
 </div>
 
-<!-- Auth modal (email/password) -->
-<div class="auth-modal-overlay" id="authModal">
-  <div class="auth-modal">
-    <h3 id="authModalTitle">Sign in</h3>
-    <form class="auth-form" id="authForm" onsubmit="return submitAuth(event)">
-      <div class="auth-error" id="authError"></div>
-      <input type="email" id="authEmail" placeholder="Email" required autocomplete="email">
-      <input type="password" id="authPassword" placeholder="Password" required autocomplete="current-password">
-      <div class="btn-row">
-        <button type="button" class="btn btn-skip" onclick="closeAuthModal()">Cancel</button>
-        <button type="submit" class="btn btn-primary" id="authSubmit">Sign in</button>
-      </div>
-      <div class="auth-toggle" id="authToggle"></div>
-    </form>
+<div id="DS" class="ds" style="display:none;">
+  <div class="dt">Session complete</div>
+  <div class="du" id="DU"></div>
+  <div class="dg">
+    <div class="dsc"><div class="dv" id="dTo">&mdash;</div><div class="dl">attempted</div></div>
+    <div class="dsc"><div class="dv" id="dCo">&mdash;</div><div class="dl">correct</div></div>
+    <div class="dsc"><div class="dv" id="dAc">&mdash;</div><div class="dl">accuracy</div></div>
+    <div class="dsc"><div class="dv" id="dAv">&mdash;</div><div class="dl">avg seconds</div></div>
   </div>
+  <div class="bkd" id="BKD"></div>
+  <button onclick="rst()" style="padding:10px 28px;font-size:14px;">Back to start</button>
 </div>
 
-<!-- XP Bar -->
-<div class="xp-section">
-  <div class="xp-meta">
-    <span id="xpLabel">0 XP</span>
-    <span id="xpNext">Next milestone: 200 XP</span>
-  </div>
-  <div class="xp-bar-bg"><div class="xp-bar-fill" id="xpBar" style="width:0%"></div></div>
 </div>
+<script>
+'use strict';
+const PER=50;
+const rp=a=>a[Math.floor(Math.random()*a.length)];
+const fm=v=>Math.abs(v-Math.round(v))<0.05?Math.round(v):parseFloat(v.toFixed(1));
+const fnum=n=>n.toLocaleString('en-US');
 
-<!-- Stats -->
-<div class="stats-row">
-  <div class="stat-card">
-    <div class="stat-value" id="statXP">0</div>
-    <div class="stat-label">Total XP</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value" id="statStreak">0 🔥</div>
-    <div class="stat-label">Streak</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value" id="statAccuracy">—</div>
-    <div class="stat-label">Accuracy</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value" id="statCorrect">0</div>
-    <div class="stat-label">Correct</div>
-  </div>
-</div>
+function gGP(){
+  const v=Math.floor(Math.random()*5);
+  const rev=rp([400,500,600,800,1000,1200,1500,2000]);
+  const cogsPct=rp([30,35,40,45,50,55,60]);
+  const cogs=Math.round(rev*cogsPct/100);
+  const gp=rev-cogs;
+  if(v===0)return{ty:'gp',tx:`Revenue $${rev}k, COGS $${cogs}k. Gross profit?`,ans:gp,hi:`GP = $${rev}k − $${cogs}k = $${gp}k.`,tl:Math.max(1,gp*0.02),sb:'Answer in $k'};
+  if(v===1){const opex=Math.round(rev*rp([15,20,25,30])/100);const op=gp-opex;return{ty:'gp',tx:`Revenue $${rev}k, COGS $${cogs}k, OpEx $${opex}k. Operating profit?`,ans:op,hi:`GP = $${gp}k. OP = $${gp}k − $${opex}k = $${op}k.`,tl:Math.max(1,Math.abs(op)*0.02),sb:'Answer in $k'};}
+  if(v===2)return{ty:'gp',tx:`Revenue $${rev}k, COGS is ${cogsPct}% of revenue. Gross margin %?`,ans:100-cogsPct,hi:`GM = 100% − ${cogsPct}% = ${100-cogsPct}%.`,tl:1,sb:'Whole number %'};
+  if(v===3){const opexPct=rp([15,20,25]);return{ty:'gp',tx:`COGS ${cogsPct}% of revenue, OpEx ${opexPct}% of revenue. Operating margin %?`,ans:100-cogsPct-opexPct,hi:`OM = 100% − ${cogsPct}% − ${opexPct}% = ${100-cogsPct-opexPct}%.`,tl:1,sb:'Whole number %'};}
+  const opex=Math.round(rev*rp([15,20,25])/100);const op=gp-opex;
+  return{ty:'gp',tx:`Revenue $${rev}k, gross margin ${100-cogsPct}%, OpEx $${opex}k. Operating profit?`,ans:op,hi:`GP = ${100-cogsPct}% × $${rev}k = $${gp}k. OP = $${gp}k − $${opex}k = $${op}k.`,tl:Math.max(1,Math.abs(op)*0.02),sb:'Answer in $k'};
+}
 
-<!-- Catalog (sequential topics) -->
-<div class="catalog-view" id="catalogView">
-  <h2 class="catalog-heading">Case math</h2>
-  <p class="catalog-sub">Sequential categories from foundation through deal math (same types as in our research doc). Everything is unlocked — practice what you need.</p>
-  <button type="button" class="btn btn-primary catalog-random-btn" id="catalogRandomBtn">Random mix (all topics)</button>
-  <div class="catalog-root" id="catalogGrid"></div>
-</div>
+function gMU(){
+  const a=Math.floor(Math.random()*70)+15,b=Math.floor(Math.random()*70)+15;
+  const av=a*b,a10=Math.round(a/10)*10,b10=Math.round(b/10)*10,da=a-a10,db=b-b10;
+  let h=`Round: ${a10}×${b10}=${fnum(a10*b10)}.`;
+  if(da||db)h+=` Adjust: +${a10}×${db} +${b10}×${da} +${da}×${db} = ${fnum(av)}.`;
+  return{ty:'mu',tx:`${a} × ${b}`,ans:av,hi:h,tl:0,sb:''};
+}
 
-<!-- Drill -->
-<div class="drill-view" id="drillView" style="display:none">
-  <div class="drill-header">
-    <button type="button" class="btn btn-skip drill-back" onclick="backToCatalog()">← Topics</button>
-    <span class="drill-title" id="drillTitle">Practice</span>
-  </div>
+function gDV(){
+  const v=Math.floor(Math.random()*2);
+  if(v===0){
+    const div=rp([3,4,6,8,12]);
+    const q=rp([12,15,18,24,36,48,60,72,96])*div;
+    const k1=rp([3,4,5]),k2=rp([1,2]);
+    const A=q*Math.pow(10,k1),B=div*Math.pow(10,k2);
+    const ans=A/B;
+    return{ty:'dv',tx:`${fnum(A)} ÷ ${fnum(B)}`,ans,hi:`Cancel ${k2} zero${k2>1?'s':''}: ${fnum(q*Math.pow(10,k1-k2))} ÷ ${div} = ${fnum(ans)}.`,tl:Math.max(1,ans*0.01),sb:''};
+  }
+  const pct=rp([2,4,5,8,15]);
+  const base=rp([1.5,2,2.5,3,4,4.5,6,8]);
+  const ans=Math.round(base*1000*pct/100);
+  return{ty:'dv',tx:`${pct}% of $${base}B, in $M?`,ans,hi:`1% of $${base}B = $${base*10}M. ×${pct} = $${fnum(ans)}M.`,tl:Math.max(1,ans*0.01),sb:'Answer in $M'};
+}
 
-<!-- Question Card -->
-<div class="question-card" id="questionCard">
-  <div class="q-top">
-    <div class="q-top-left">
-      <span class="category-badge" id="categoryBadge">Times Tables</span>
-      <span class="difficulty-chip easy" id="difficultyChip">Easy</span>
-    </div>
-    <span class="timer" id="timer">0:00</span>
-  </div>
-  <div class="question-text" id="questionText">Loading...</div>
-  <details class="hint-details" id="hintDetails">
-    <summary>Show hint</summary>
-    <div class="hint-body" id="hintText"></div>
-  </details>
-  <div class="answer-row">
-    <input class="answer-input" id="answerInput" type="text" placeholder="Your answer" autocomplete="off" autocorrect="off">
-    <button class="btn btn-primary" onclick="submitAnswer()">Check</button>
-    <button class="btn btn-skip" onclick="skipQuestion()">Skip</button>
-  </div>
+const FRACS=[{n:'1/3',ans:0.333,hi:'0.333…'},{n:'2/3',ans:0.667,hi:'1 − 1/3 = 0.667.'},{n:'1/6',ans:0.167,hi:'half of 1/3 = 0.167.'},{n:'1/7',ans:0.143,hi:'≈ 0.143.'},{n:'1/8',ans:0.125,hi:'half of 0.25.'},{n:'3/8',ans:0.375,hi:'3 × 0.125.'},{n:'1/9',ans:0.111,hi:'0.111…'}];
+function gFT(){const f=rp(FRACS);return{ty:'ft',tx:`${f.n} as a decimal?`,ans:f.ans,hi:f.hi,tl:0.005,sb:'3 decimal places'};}
 
-  <div class="feedback-panel" id="feedbackPanel">
-    <div class="feedback-header">
-      <span id="feedbackIcon">✓</span>
-      <span id="feedbackTitle">Correct!</span>
-      <span class="xp-gained" id="xpGained">+10 XP</span>
-    </div>
-    <div class="solution" id="solutionText"></div>
-  </div>
+function gRV(){
+  const p=rp([10,10,20,20,25,25,33,50,100]);
+  const af=rp([80,84,90,96,100,108,110,120,125,132,144,150,160,180,200,216,220,240,250,270,300,360,400,450,480,500,540,600]);
+  const bef=parseFloat((af/(1+p/100)).toFixed(1));
+  let m;if(p===10)m='×10÷11';else if(p===20)m='×5÷6';else if(p===25)m='×4÷5';else if(p===33)m='×3÷4';else if(p===50)m='×2÷3';else m='÷2';
+  return{ty:'rv',tx:`After +${p}%, the result is ${af}. What was the original?`,ans:bef,hi:`Undo +${p}%: ${m}. Answer = ${bef}.`,tl:1,sb:'1 decimal if not clean'};
+}
 
-  <div class="streak-banner" id="streakBanner">🔥 Streak bonus! +50% XP</div>
+function gPC(){
+  const v=Math.floor(Math.random()*2);
+  if(v===0){const old=rp([80,100,120,150,200,240,300,400,500,600,800]),chg=rp([-30,-25,-20,-15,-10,10,15,20,25,30,40,50]),nw=Math.round(old*(1+chg/100));return{ty:'pc',tx:`Was $${old}M, now $${nw}M. % change?`,ans:chg,hi:`(${nw} − ${old}) ÷ ${old} × 100 = ${chg}%. Old is gold: divide by the old number.`,tl:1,sb:'Whole number %, include sign'};}
+  const c1=rp([10,15,20,25,30]),c2=rp([10,15,20,25,30]),res=Math.round(100*(1+c1/100)*(1+c2/100));
+  return{ty:'pc',tx:`Grows ${c1}% in year 1, then ${c2}% in year 2. Total % change?`,ans:res-100,hi:`100 → ${Math.round(100*(1+c1/100))} → ${res}. Total = ${res-100}% (growth compounds, don't just add).`,tl:2,sb:'Whole number %'};
+}
 
-  <button class="btn btn-next" id="nextBtn" onclick="nextQuestion()" style="display:none">Next Question →</button>
-</div>
-</div>
+function gWA(){
+  const v=Math.floor(Math.random()*2);
+  if(v===0){const r1=rp([100,200,300,400,500]),r2=rp([100,200,300,400,500]),m1=rp([10,15,20,25,30]),m2=rp([10,15,20,25,30,40]);const ans=Math.round((r1*m1+r2*m2)/(r1+r2)*10)/10;return{ty:'wa',tx:`$${r1}M at ${m1}% margin, $${r2}M at ${m2}% margin. Blended margin?`,ans,hi:`(${r1}×${m1} + ${r2}×${m2}) ÷ ${r1+r2} = ${ans}%. Weight by revenue.`,tl:1,sb:'1 decimal %'};}
+  const w1=rp([100,200,300,400,500]),w2=rp([100,150,200,300]),v1=rp([10,15,20,25,30,40,50]),avg=v1+rp([5,10,15,20,25]);
+  const v2=Math.round(((avg*(w1+w2))-(v1*w1))/w2*10)/10;if(v2<0||v2>300)return gWA();
+  return{ty:'wa',tx:`${w1} units at $${v1}, ${w2} units at $X. Average price $${avg}. Find X.`,ans:v2,hi:`Total = ${w1+w2}×${avg} = ${fnum((w1+w2)*avg)}. Minus ${w1}×${v1} = ${fnum(w1*v1)}. Remainder ÷ ${w2} = ${v2}.`,tl:1,sb:'Round to 1 decimal'};
+}
 
-<!-- Config & Supabase (config.js optional; copy from config.example.js for local auth) -->
-<script>window.__SUPABASE_CONFIG__ = window.__SUPABASE_CONFIG__ || null;</script>
-<script src="config.js" onerror="window.__SUPABASE_CONFIG__=null"></script>
+function gBE(){
+  const v=Math.floor(Math.random()*2);
+  if(v===0){const fc=rp([50,80,100,120,150,200,240,300]),pr=rp([10,15,20,25,30,40,50]),vc=rp([4,5,6,8,10,12,15,18,20]);if(vc>=pr)return gBE();const cm=pr-vc,be=Math.round(fc*1000/cm);return{ty:'be',tx:`Fixed costs $${fc}k. Price $${pr}, variable cost $${vc}/unit. Break-even units?`,ans:be,hi:`Contribution margin = $${cm}. BE = $${fc}k ÷ $${cm} = ${fnum(be)} units.`,tl:Math.max(2,be*0.01),sb:'Round to nearest whole'};}
+  const rev=rp([500,600,800,1000,1200,1500,2000]),fc=rp([100,120,150,180,200,240,300]),vp=rp([30,35,40,50,60]);
+  const vc=Math.round(rev*vp/100),profit=rev-fc-vc;
+  return{ty:'be',tx:`Revenue $${rev}k, fixed costs $${fc}k, variable costs ${vp}% of revenue. Profit?`,ans:profit,hi:`VC = $${vc}k. Profit = ${rev} − ${fc} − ${vc} = $${profit}k.`,tl:2,sb:'Answer in $k'};
+}
 
-<!-- XP milestone modal -->
-<div class="modal-overlay" id="milestoneModal">
-  <div class="modal">
-    <div class="modal-emoji">🎉</div>
-    <div class="modal-title">Milestone!</div>
-    <div class="modal-subtitle">You crossed an XP threshold</div>
-    <div class="modal-new-level" id="modalMilestoneText"></div>
-    <button class="modal-btn" onclick="closeMilestoneModal()">Keep going →</button>
-  </div>
-</div>
+function gCA(){
+  const v=Math.floor(Math.random()*2);
+  if(v===0){const s=rp([100,200,250,400,500,1000]),r=rp([10,20,25,50]),n=rp([2,3,4]);let e=s,st=`${s}`;for(let i=0;i<n;i++){e=Math.round(e*(1+r/100));st+=` → ${e}`;}return{ty:'ca',tx:`$${s} at ${r}% CAGR for ${n} years. Final value?`,ans:e,hi:`×${1+r/100} each year: ${st}`,tl:Math.max(2,e*0.02),sb:'Round to nearest whole'};}
+  const r=rp([12,18,24,36]),yrs=Math.round(72/r);
+  return{ty:'ca',tx:`At ${r}% growth, how many years to double?`,ans:yrs,hi:`Rule of 72: 72 ÷ ${r} = ${yrs} years.`,tl:0.5,sb:'Whole number'};
+}
 
-<script type="module" src="main.js"></script>
+function gPB(){
+  const inv=rp([100,150,200,250,300,400,500,600,800,1000]),cf=rp([20,25,40,50,60,80,100,120,150,200]);
+  const ans=Math.round(inv/cf*10)/10;if(ans>15||ans<1)return gPB();
+  return{ty:'pb',tx:`Investment $${inv}M. Annual profit $${cf}M. Payback period?`,ans,hi:`$${inv} ÷ $${cf} = ${ans} years.`,tl:0.2,sb:'Years, 1 decimal'};
+}
+
+function gMM(){
+  const v=Math.floor(Math.random()*3);
+  if(v===0){const cost=rp([60,70,75,80,100,120,150,200,250,300,400]),mp=rp([10,15,20,25,33,50,100]);const profit=Math.round(cost*mp/100),rev=cost+profit,margin=Math.round(profit/rev*100*10)/10;return{ty:'mm',tx:`Cost $${cost}, selling price $${rev}. Gross margin %?`,ans:margin,hi:`Profit = $${profit}. Margin = ${profit} ÷ ${rev} = ${margin}%. Margin is on price, markup is on cost.`,tl:1,sb:'1 decimal %'};}
+  if(v===1){const margins=[10,20,25,33,40,50],markups=[11,25,33,50,67,100],i=Math.floor(Math.random()*margins.length);return{ty:'mm',tx:`Gross margin is ${margins[i]}%. Markup %?`,ans:markups[i],hi:`On $100 revenue: profit $${margins[i]}, cost $${100-margins[i]}. Markup = ${margins[i]}÷${100-margins[i]} = ${markups[i]}%.`,tl:1,sb:'Whole number %'};}
+  const markups=[10,20,25,33,50,100],margins=[9,17,20,25,33,50],i=Math.floor(Math.random()*markups.length);
+  return{ty:'mm',tx:`Markup is ${markups[i]}%. Gross margin %?`,ans:margins[i],hi:`On $100 cost: profit $${markups[i]}, revenue $${100+markups[i]}. Margin = ${margins[i]}%.`,tl:1,sb:'Whole number %'};
+}
+
+function gROI(){
+  const v=Math.floor(Math.random()*3);
+  if(v===0){const inv=rp([100,150,200,250,300,400,500,600,800]),profit=rp([10,15,20,25,30,40,50,60,75,80,100,120,150]);const roi=Math.round(profit/inv*1000)/10;return{ty:'roi',tx:`Investment $${inv}M, profit $${profit}M. ROI?`,ans:roi,hi:`ROI = ${profit} ÷ ${inv} × 100 = ${roi}%.`,tl:1,sb:'1 decimal %'};}
+  if(v===1){const inv=rp([100,200,300,400,500]),roi=rp([10,15,20,25,30,40,50]),profit=Math.round(inv*roi/100);return{ty:'roi',tx:`Investment $${inv}M, ROI ${roi}%. Profit?`,ans:profit,hi:`Profit = ${roi}% × $${inv}M = $${profit}M.`,tl:Math.max(1,profit*0.02),sb:'Round to nearest whole $M'};}
+  const profit=rp([20,30,40,50,60,80,100]),roi=rp([10,15,20,25,30,40,50]),inv=Math.round(profit/(roi/100));
+  return{ty:'roi',tx:`Profit $${profit}M at ${roi}% ROI. Investment?`,ans:inv,hi:`Investment = ${profit} ÷ ${roi}% = $${inv}M.`,tl:Math.max(1,inv*0.02),sb:'Round to nearest whole $M'};
+}
+
+function gCU(){
+  const v=Math.floor(Math.random()*3);
+  const cap=rp([5000,8000,10000,12000,15000,20000,25000,30000]),util=rp([60,65,70,75,80,85,90]),out=Math.round(cap*util/100);
+  if(v===0)return{ty:'cu',tx:`Airline has ${fnum(cap)} seats/day, flies ${fnum(out)} passengers. Load factor?`,ans:util,hi:`${fnum(out)} ÷ ${fnum(cap)} × 100 = ${util}%.`,tl:1,sb:'Whole number %'};
+  if(v===1)return{ty:'cu',tx:`Factory capacity ${fnum(cap)}/mo at ${util}% utilization. Output?`,ans:out,hi:`${util}% × ${fnum(cap)} = ${fnum(out)} units.`,tl:Math.max(10,out*0.02),sb:'Round to nearest whole'};
+  const slack=cap-out;return{ty:'cu',tx:`Capacity ${fnum(cap)}, running at ${util}%. How much more could it produce?`,ans:slack,hi:`Slack = ${fnum(cap)} − ${fnum(out)} = ${fnum(slack)}.`,tl:Math.max(10,slack*0.02),sb:'Round to nearest whole'};
+}
+
+function gPV(){
+  const v=Math.floor(Math.random()*2);
+  if(v===0){
+    const rate=rp([6,8,10,12,15,20,25]),rateD=rate/100;
+    const pvVal=rp([2,3,4,5,6,8,10,12,15,20,24,25,30,40,50])*1000,cf=Math.round(pvVal*rateD);
+    return{ty:'pv',tx:`Annual cash flow $${fnum(cf)}, discount rate ${rate}%. Value as a perpetuity?`,ans:pvVal,hi:`PV = ${fnum(cf)} ÷ ${rateD} = $${fnum(pvVal)}.`,tl:Math.max(50,pvVal*0.02),sb:'Round to nearest whole $'};
+  }
+  const g=rp([2,4,5,6]),r=10,cf=rp([2,3,4,5,6,8,12]);
+  const ans=Math.round(cf/((r-g)/100));
+  return{ty:'pv',tx:`Cash flow $${cf}M growing ${g}%/yr forever, discount rate ${r}%. NPV?`,ans,hi:`Growing perpetuity: CF ÷ (r − g) = ${cf} ÷ ${(r-g)/100} = $${fnum(ans)}M.`,tl:Math.max(2,ans*0.03),sb:'Answer in $M'};
+}
+
+function gIT(){
+  const v=Math.floor(Math.random()*3);
+  const inv=rp([50,80,100,120,150,200,250,300]),turns=rp([3,4,5,6,8,10,12]),cogs=inv*turns;
+  if(v===0)return{ty:'it',tx:`COGS $${cogs}k/yr, average inventory $${inv}k. Inventory turnover?`,ans:turns,hi:`${cogs} ÷ ${inv} = ${turns} turns.`,tl:0.2,sb:'Round to nearest whole'};
+  if(v===1)return{ty:'it',tx:`Turnover is ${turns}, average inventory $${inv}k. COGS?`,ans:cogs,hi:`${turns} × $${inv}k = $${cogs}k.`,tl:Math.max(2,cogs*0.02),sb:'Answer in $k'};
+  const days=Math.round(365/turns);return{ty:'it',tx:`Inventory turnover is ${turns}. Days of inventory on hand?`,ans:days,hi:`365 ÷ ${turns} ≈ ${days} days.`,tl:Math.max(2,days*0.05),sb:'Round to nearest whole day'};
+}
+
+function gCH(){
+  const v=Math.floor(Math.random()*3);
+  const start=rp([500,800,1000,1200,1500,2000,2500,3000]),churnP=rp([5,10,15,20,25,30]),lost=Math.round(start*churnP/100);
+  if(v===0)return{ty:'ch',tx:`${fnum(start)} customers at start, ${fnum(lost)} lost by year end. Churn rate?`,ans:churnP,hi:`${fnum(lost)} ÷ ${fnum(start)} × 100 = ${churnP}%.`,tl:1,sb:'Whole number %'};
+  if(v===1)return{ty:'ch',tx:`${fnum(start)} customers, ${churnP}% churn. How many lost?`,ans:lost,hi:`${churnP}% × ${fnum(start)} = ${fnum(lost)}.`,tl:Math.max(2,lost*0.02),sb:'Round to nearest whole'};
+  const start2=rp([1000,2000,5000,10000]),churnP2=rp([10,20,25]),n=rp([2,3]);
+  let e=start2,st=`${fnum(start2)}`;for(let i=0;i<n;i++){e=Math.round(e*(1-churnP2/100));st+=` → ${fnum(e)}`;}
+  return{ty:'ch',tx:`${fnum(start2)} customers, ${churnP2}% annual churn. After ${n} years?`,ans:e,hi:`×${1-churnP2/100} per year: ${st}`,tl:Math.max(2,e*0.02),sb:'Round to nearest whole'};
+}
+
+function gLTV(){
+  const v=Math.floor(Math.random()*2);
+  if(v===0){const rev=rp([100,150,200,250,300,400,500]),lifespan=rp([2,3,4,5,6,8,10]),ltv=rev*lifespan;return{ty:'ltv',tx:`Revenue $${rev}/customer/yr, average lifespan ${lifespan} years. LTV?`,ans:ltv,hi:`${rev} × ${lifespan} = $${fnum(ltv)}.`,tl:Math.max(2,ltv*0.02),sb:'Round to nearest whole $'};}
+  const monthly=rp([20,30,40,50,60,80]),churnP=rp([10,20,25,50]),lifespan=Math.round(100/churnP),rev=monthly*12,ltv=rev*lifespan;
+  return{ty:'ltv',tx:`$${monthly}/month per customer, ${churnP}% annual churn. LTV?`,ans:ltv,hi:`Annual rev = ${monthly}×12 = $${rev}. Lifespan = 1÷${churnP}% = ${lifespan} yrs. LTV = $${fnum(ltv)}.`,tl:Math.max(2,ltv*0.03),sb:'Round to nearest whole $'};
+}
+
+function gBR(){
+  const v=Math.floor(Math.random()*3);
+  if(v===0){const costs=rp([200,250,300,400,500,600,800]),rev=rp([50,80,100,120,150,200]);if(rev>=costs)return gBR();const burn=costs-rev;return{ty:'br',tx:`Monthly costs $${costs}k, monthly revenue $${rev}k. Net burn?`,ans:burn,hi:`${costs} − ${rev} = $${burn}k/month.`,tl:Math.max(1,burn*0.02),sb:'Answer in $k'};}
+  if(v===1){const cash=rp([1,2,3,4,5,6,8,10]),burn=rp([100,150,200,250,300,400,500]);const runway=Math.round(cash*1000/burn*10)/10;return{ty:'br',tx:`Cash $${cash}M, burn $${burn}k/month. Runway?`,ans:runway,hi:`$${cash}M = $${fnum(cash*1000)}k. ÷ ${burn} = ${runway} months.`,tl:0.3,sb:'Months, 1 decimal'};}
+  const burn=rp([100,150,200,250,300,400]),runway=rp([6,8,10,12,15,18,24]),cash=burn*runway;
+  return{ty:'br',tx:`Burn $${burn}k/month, need ${runway} months of runway. Cash required?`,ans:cash,hi:`${burn} × ${runway} = $${fnum(cash)}k.`,tl:Math.max(2,cash*0.02),sb:'Answer in $k'};
+}
+
+function gMS(){
+  const v=Math.floor(Math.random()*4);
+  if(v===0){const pop=rp([60,80,120,330]),size=rp([2,2.5,3]);const ans=Math.round(pop/size*10)/10;return{ty:'ms',tx:`Population ${pop}M, average household ${size} people. How many households, in millions?`,ans,hi:`${pop} ÷ ${size} = ${ans}M households.`,tl:Math.max(1,ans*0.03),sb:'In millions'};}
+  if(v===1){const pop=rp([330,270,120,60]),pct=rp([20,25,30]);const ans=Math.round(pop*(100-pct)/100);return{ty:'ms',tx:`Population ${pop}M, ${pct}% are under 18. How many adults, in millions?`,ans,hi:`${100-pct}% × ${pop}M = ${ans}M.`,tl:Math.max(2,ans*0.03),sb:'In millions'};}
+  if(v===2){const pop=rp([330,80,60]),life=rp([75,80]);const ans=Math.round(pop/life*10)/10;return{ty:'ms',tx:`Population ${pop}M, life expectancy ${life} years. Roughly how many people per age year, in millions?`,ans,hi:`${pop} ÷ ${life} ≈ ${ans}M per cohort. Same trick sizes "born per year".`,tl:Math.max(0.3,ans*0.1),sb:'In millions'};}
+  const hh=rp([130,50,25]),own=rp([40,50,60,80]),spend=rp([20,50,100,200]);
+  const owners=hh*own/100;const ans=Math.round(owners*spend);
+  return{ty:'ms',tx:`${hh}M households, ${own}% own a pet, owners spend $${spend}/yr. Market size, in $M?`,ans,hi:`${hh}M × ${own}% = ${owners}M owners. × $${spend} = $${fnum(ans)}M.`,tl:Math.max(5,ans*0.03),sb:'In $M'};
+}
+
+function gSH(){
+  const v=Math.floor(Math.random()*3);
+  if(v===0){const rev=rp([1,2,3,4,5,6,8,10,12,15,20])*5;const market=rev*rp([4,5,8,10,20]);const share=Math.round(rev/market*100);return{ty:'sh',tx:`Client revenue $${rev}M, total market $${fnum(market)}M. Market share?`,ans:share,hi:`${rev} ÷ ${fnum(market)} × 100 = ${share}%.`,tl:0.5,sb:'Whole number %'};}
+  if(v===1){const market=rp([200,400,500,800,1000,2000]),share=rp([5,10,15,20,25,40]);const ans=Math.round(market*share/100);return{ty:'sh',tx:`Market is $${fnum(market)}M, client has ${share}% share. Client revenue?`,ans,hi:`${share}% × ${fnum(market)} = $${fnum(ans)}M.`,tl:Math.max(1,ans*0.02),sb:'In $M'};}
+  const market=rp([400,500,800,1000]),share=rp([10,20,25]),growth=rp([25,50,100]);
+  const rev=market*share/100,newRev=rev*(1+growth/100);
+  const ans=Math.round(newRev/market*1000)/10;
+  return{ty:'sh',tx:`Client has ${share}% of a $${fnum(market)}M market. Client grows ${growth}%, market stays flat. New share?`,ans,hi:`Revenue ${rev} → ${newRev}. ÷ ${fnum(market)} = ${ans}%.`,tl:0.5,sb:'%, 1 decimal'};
+}
+
+const TOPICS=[
+  {ty:'mu',lb:'Multiplication',bc:'bmu',g:gMU},
+  {ty:'dv',lb:'Big division',bc:'bdv',g:gDV},
+  {ty:'ft',lb:'Fractions',bc:'bft',g:gFT},
+  {ty:'rv',lb:'Reverse %',bc:'brv',g:gRV},
+  {ty:'pc',lb:'% change',bc:'bpc',g:gPC},
+  {ty:'wa',lb:'Weighted avg',bc:'bwa',g:gWA},
+  {ty:'gp',lb:'Gross/Op profit',bc:'bgp',g:gGP},
+  {ty:'mm',lb:'Margin/Markup',bc:'bmm',g:gMM},
+  {ty:'be',lb:'Break-even',bc:'bbe',g:gBE},
+  {ty:'ms',lb:'Market sizing',bc:'bms',g:gMS},
+  {ty:'sh',lb:'Market share',bc:'bsh',g:gSH},
+  {ty:'ca',lb:'CAGR',bc:'bca',g:gCA},
+  {ty:'pb',lb:'Payback',bc:'bpb',g:gPB},
+  {ty:'roi',lb:'ROI',bc:'broi',g:gROI},
+  {ty:'pv',lb:'NPV/Perpetuity',bc:'bpv',g:gPV},
+  {ty:'cu',lb:'Capacity/Load',bc:'bcu',g:gCU},
+  {ty:'it',lb:'Inventory turns',bc:'bit',g:gIT},
+  {ty:'ch',lb:'Churn',bc:'bch',g:gCH},
+  {ty:'ltv',lb:'LTV',bc:'bltv',g:gLTV},
+  {ty:'br',lb:'Burn/Runway',bc:'bbr',g:gBR},
+];
+const T=Object.fromEntries(TOPICS.map(t=>[t.ty,t]));
+
+const KEY='casemathdrill_v1';
+let DB={life:{},sessions:0,answered:0,correct:0,enabled:TOPICS.map(t=>t.ty),len:15};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.life)DB={...DB,...s};}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(DB));}catch(e){}}
+
+const PERQ=50;
+let SES=DB.len*60,sl=SES,pl=PERQ,sIv=null,pIv=null,cur=null,qn=0,an=0,co=0,dn=false,answered=false;
+let ts=[],cats={},t0=null;
+
+function setLen(m){DB.len=m;SES=m*60;save();renderStart();}
+function togglePill(ty){
+  const i=DB.enabled.indexOf(ty);
+  if(i>=0){if(DB.enabled.length===1)return;DB.enabled.splice(i,1);}
+  else DB.enabled.push(ty);
+  save();renderStart();
+}
+function renderStart(){
+  document.querySelectorAll('#SEG button').forEach(b=>b.className=+b.dataset.m===DB.len?'on':'');
+  const pw=document.getElementById('PILLS');pw.innerHTML='';
+  TOPICS.forEach(t=>{
+    const s=DB.life[t.ty],on=DB.enabled.includes(t.ty);
+    const el=document.createElement('span');
+    el.className='pill'+(on?'':' off');
+    el.textContent=t.lb;
+    if(s&&s.a){const ac=document.createElement('span');ac.className='ac';ac.textContent=' '+Math.round(s.c/s.a*100)+'%';el.appendChild(ac);}
+    el.onclick=()=>togglePill(t.ty);
+    pw.appendChild(el);
+  });
+  const lt=document.getElementById('LT');
+  lt.textContent=DB.answered?`Lifetime: ${fnum(DB.answered)} answered, ${Math.round(DB.correct/DB.answered*100)}% correct, ${DB.sessions} sessions. Stats saved on this device.`:'Stats live in this browser. No account needed.';
+}
+function wipe(){
+  if(!confirm('Reset all saved stats?'))return;
+  DB={life:{},sessions:0,answered:0,correct:0,enabled:TOPICS.map(t=>t.ty),len:DB.len};save();renderStart();
+}
+
+function ngen(){return T[rp(DB.enabled)].g();}
+
+function upSt(){
+  document.getElementById('sA').textContent=an;document.getElementById('sC').textContent=co;
+  document.getElementById('sP').textContent=an>0?Math.round(co/an*100)+'%':'—';
+  document.getElementById('sT').textContent=ts.length?(ts.reduce((a,b)=>a+b,0)/ts.length).toFixed(1)+'s':'—';
+}
+
+function record(ty,ok){
+  cats[ty]=cats[ty]||{a:0,c:0};cats[ty].a++;if(ok)cats[ty].c++;
+  DB.life[ty]=DB.life[ty]||{a:0,c:0};DB.life[ty].a++;if(ok)DB.life[ty].c++;
+  DB.answered++;if(ok)DB.correct++;save();
+}
+
+function nxt(){
+  if(dn)return;clearInterval(pIv);answered=false;
+  const fb=document.getElementById('FB');fb.className='fb mt';fb.textContent='';
+  document.getElementById('HB').classList.remove('on');
+  cur=ngen();qn++;document.getElementById('QC').textContent='Q '+qn;
+  const t=T[cur.ty],bd=document.getElementById('BD');bd.textContent=t.lb;bd.className='bdg '+t.bc;
+  document.getElementById('QT').textContent=cur.tx;document.getElementById('QS').textContent=cur.sb||'';
+  document.getElementById('HB').textContent=cur.hi||'';
+  const ai=document.getElementById('AI');ai.value='';ai.focus();
+  pl=PERQ;const pb=document.getElementById('PTB');pb.style.width='100%';pb.style.background='#1D9E75';
+  pIv=setInterval(()=>{
+    pl-=0.1;const p=Math.max(0,pl/PERQ);
+    pb.style.width=(p*100)+'%';pb.style.background=p<0.25?'#E24B4A':p<0.5?'#EF9F27':'#1D9E75';
+    if(pl<=0){clearInterval(pIv);if(answered)return;answered=true;
+      const fb2=document.getElementById('FB');fb2.textContent='Time up. Answer: '+fm(cur.ans);fb2.className='fb no';
+      document.getElementById('HB').classList.add('on');an++;record(cur.ty,false);upSt();}
+  },100);t0=Date.now();
+}
+
+function chk(){
+  if(!cur||dn||answered)return;
+  const raw=parseFloat(document.getElementById('AI').value.replace(/[,$\s]/g,''));
+  if(isNaN(raw))return;
+  clearInterval(pIv);answered=true;
+  const el=(Date.now()-t0)/1000;
+  const ok=Math.abs(raw-cur.ans)<=Math.max(cur.tl||0,0.01);
+  const fb=document.getElementById('FB');
+  if(ok){co++;ts.push(el);fb.textContent='Correct! ('+el.toFixed(1)+'s)';fb.className='fb ok';}
+  else{fb.textContent='Not quite. Answer: '+fm(cur.ans);fb.className='fb no';document.getElementById('HB').classList.add('on');}
+  an++;record(cur.ty,ok);upSt();
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter')return;
+  if(document.getElementById('DA').style.display==='none')return;
+  e.preventDefault();
+  if(answered)nxt();else chk();
+});
+
+function endS(){
+  if(dn)return;
+  dn=true;clearInterval(sIv);clearInterval(pIv);
+  DB.sessions++;save();
+  document.getElementById('DA').style.display='none';document.getElementById('DS').style.display='block';
+  document.getElementById('dTo').textContent=an;document.getElementById('dCo').textContent=co;
+  document.getElementById('dAc').textContent=an>0?Math.round(co/an*100)+'%':'—';
+  document.getElementById('dAv').textContent=ts.length?(ts.reduce((a,b)=>a+b,0)/ts.length).toFixed(1)+'s':'—';
+  const mins=Math.round((SES-sl)/60);
+  document.getElementById('DU').textContent=an+' questions in '+(mins>0?mins:'under 1')+' minute'+(mins===1?'':'s')+'.';
+  let h='';TOPICS.forEach(t=>{const s=cats[t.ty];if(!s||!s.a)return;h+=`<div class="brow"><span class="blb">${t.lb}</span><span class="bvl">${s.c}/${s.a} (${Math.round(s.c/s.a*100)}%)</span></div>`;});
+  document.getElementById('BKD').innerHTML=h||'<div class="brow"><span class="blb">No questions answered</span></div>';
+}
+
+function go(){
+  SES=DB.len*60;sl=SES;pl=PERQ;qn=0;an=0;co=0;dn=false;answered=false;ts=[];cats={};
+  document.getElementById('SS').style.display='none';document.getElementById('DS').style.display='none';
+  document.getElementById('DA').style.display='block';
+  document.getElementById('ST').textContent=Math.floor(SES/60)+':00';
+  document.getElementById('ST').className='st';document.getElementById('PB').style.width='100%';
+  document.getElementById('PB').style.background='#1D9E75';
+  upSt();
+  sIv=setInterval(()=>{sl--;const m=Math.floor(sl/60),s=sl%60;const el=document.getElementById('ST');
+    el.textContent=m+':'+(s<10?'0':'')+s;const p=sl/SES;
+    document.getElementById('PB').style.width=(p*100)+'%';document.getElementById('PB').style.background=p<0.17?'#E24B4A':p<0.33?'#EF9F27':'#1D9E75';
+    el.className='st'+(p<0.17?' w3':p<0.33?' w2':'');if(sl<=0)endS();},1000);
+  nxt();
+}
+
+function rst(){
+  clearInterval(sIv);clearInterval(pIv);
+  document.getElementById('DS').style.display='none';document.getElementById('DA').style.display='none';
+  document.getElementById('SS').style.display='block';renderStart();
+}
+
+renderStart();
+</script>
 </body>
 </html>
