@@ -1,6 +1,12 @@
 casebooks/
+.index/
+.exhibits/
+.venv/
 extracted/
 failed_downloads.txt
 claude_output.log
 app/config.js
 .vercel
+.DS_Store
+CLAUDE.md
+distinctive/

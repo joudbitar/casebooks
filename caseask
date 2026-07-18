@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# caseask - semantic search across the casebook collection.
+# Usage:
+#   ./caseask "market sizing cases about airlines"
+#   ./caseask "profitability of a hospital" 5
+# Reports: <School> p<page> <score> <snippet>. Page = PDF page, same as casesearch.
+#
+# First run sets up a local Python env and builds the embeddings index
+# (one-time, a few minutes). Everything runs locally, no API keys.
+
+set -e
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+
+if [ ! -x "$ROOT/.venv/bin/python" ]; then
+  echo "setting up python env (one time)..." >&2
+  uv venv "$ROOT/.venv" >&2
+  uv pip install --python "$ROOT/.venv/bin/python" model2vec numpy >&2
+fi
+
+if [ ! -f "$ROOT/.index/embeddings.npz" ]; then
+  echo "building embeddings index (one time)..." >&2
+  "$ROOT/.venv/bin/python" "$ROOT/scripts/build_embeddings.py" >&2
+fi
+
+exec "$ROOT/.venv/bin/python" "$ROOT/scripts/semantic_search.py" "$@"
