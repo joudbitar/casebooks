@@ -39,14 +39,14 @@ PDFs are not committed. To rebuild the library from scratch:
 
 ## Case Math Drill
 
-Live at [app-snowy-pi-90.vercel.app](https://app-snowy-pi-90.vercel.app). Drills mental math by topic (percentages, break-even, NPV, market sizing and more), grades answers, and tracks progress per topic. Works as a guest with localStorage, or with an account for cross-device progress.
+Live at [casedrills.vercel.app](https://casedrills.vercel.app). Timed sessions (5, 15, or 30 minutes) of case interview mental math across 20 topics: multiplication, big division, fractions, reverse percentages, margins, break-even, market sizing, market share, CAGR, NPV, churn, LTV and more. Every question has a tolerance-aware answer check, a method hint, and a per-question countdown. Per-topic accuracy is saved in the browser, no account needed.
 
-To self-host: create a [Supabase](https://supabase.com) project, run the two migrations in `supabase/migrations/` in the SQL editor, turn off email confirmation under Authentication > Providers > Email, then copy `app/config.example.js` to `app/config.js` and fill in your project URL and anon key.
+The whole app is one file, `app/index.html`. No build, no backend. Open it locally or host it anywhere.
 
 ## Layout
 
 - `casebooks/` PDFs by school (not committed, use the download script)
 - `.index/` extracted text plus the embeddings index (not committed)
-- `app/` Case Math Drill, entry at `app/main.js`, drills under `app/questionbank/`
+- `app/index.html` Case Math Drill, a single self-contained page
 - `scripts/` text extraction and embeddings build
 - `case_interview_math.md` math reference distilled from all 20 books
