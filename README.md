@@ -1,50 +1,49 @@
-# Casebooks
+# casebooks
 
-I built this for my girlfriend while she recruits for MBB consulting, and she uses it regularly. It collects 20 MBA casebooks in one place and makes them searchable, so finding a case by industry or concept takes seconds instead of flipping PDFs. It also includes [Case Math Drill](https://casedrills.vercel.app), a web app for practicing case interview mental math.
+Searchable library of 20 MBA consulting casebooks, plus a mental math drill.
 
-Casebook source: [Hacking the Case Interview](https://www.hackingthecaseinterview.com/pages/mba-consulting-casebooks). The full list of books and what each contributes is in [COVERAGE.md](COVERAGE.md).
+I built this for my girlfriend while she recruits for MBB consulting, and she uses it regularly. Finding a case by industry or concept takes seconds instead of flipping through PDFs, and [Case Math Drill](https://casedrills.vercel.app) covers the mental-math half of prep.
 
-## Search
+**→ [casedrills.vercel.app](https://casedrills.vercel.app)**
 
-Keyword search across all books:
+![casesearch and caseask, real output](assets/terminal.png)
 
-```
-./casesearch "market entry"             # all books
-./casesearch "profitability" Wharton    # one school
-```
+## how it works
 
-Semantic search when you don't know the exact words:
+`casesearch` greps the full text of every book and prints the school and exact PDF page; a second argument restricts it to one school. `caseask` is for when you can't remember the wording: it searches by meaning, entirely on your machine, no API keys. `render-pages Columbia_2021 144 146` turns exhibit pages into PNGs and opens them.
 
-```
-./caseask "market sizing cases about airlines"
-./caseask "private equity due diligence on a healthcare company" 5
-```
+[Case Math Drill](https://casedrills.vercel.app) is the practice side: timed questions across 20 topics, from multiplication and percentages up to break-even, CAGR, NPV and LTV, each with a time limit and a method hint. Per-topic accuracy is saved in the browser.
 
-Both print the school and PDF page. `caseask` runs a small embedding model locally. The first run sets up a Python env and builds the index, which takes a few minutes.
+![Case Math Drill mid-session](assets/drill.png)
 
-Render exhibit pages to images:
+The books come from [Hacking the Case Interview](https://www.hackingthecaseinterview.com/pages/mba-consulting-casebooks). What each one contributes is in [COVERAGE.md](COVERAGE.md), and the math from all 20 is distilled into [case_interview_math.md](case_interview_math.md).
+
+## run it locally
 
 ```
-./render-pages Columbia_2021 144 146
+git clone https://github.com/joudbitar/casebooks.git
+cd casebooks
+./download_casebooks.sh      # fetches the 20 PDFs
+./scripts/extract_text.sh    # builds the text index (needs poppler's pdftotext)
 ```
 
-## Getting the books
+The first `./caseask` run creates a Python env with uv and builds the embeddings index. That takes a few minutes, once.
 
-PDFs are not committed. To rebuild the library from scratch:
+## how it's built
 
-```
-./download_casebooks.sh        # downloads the 20 PDFs into casebooks/
-./scripts/extract_text.sh      # extracts text into .index/ (needs pdftotext)
-```
+Two bash scripts, two Python scripts, and one HTML file. No server, no database.
 
-## Case Math Drill
+- `casesearch` is a single awk pass. pdftotext separates pages with form-feed characters, so counting them while matching maps every hit back to its real PDF page. The "index" is 20 plain text files.
+- `caseask` embeds 4,013 page-sized chunks with model2vec's potion-base-8M, a static embedding model that runs locally with no GPU, and ranks queries by cosine similarity.
+- Case Math Drill is one HTML file with zero external references. vercel.json is four lines: serve the `app` directory, no framework.
+- The PDFs are not committed. `download_casebooks.sh` rebuilds the whole library from source URLs.
 
-Live at [casedrills.vercel.app](https://casedrills.vercel.app). Timed drill sessions for case interview mental math, with 20 topics covering multiplication, fractions, percentages, margins, break-even, market sizing, CAGR, NPV, churn and LTV. Each question has a time limit and a method hint. Per-topic accuracy is saved in the browser.
+## what it doesn't do
 
-## Layout
+- Built on and for macOS. `render-pages` opens Preview, and the scripts assume poppler and uv are installed. Linux is probably close but untested.
+- `casesearch` is a grep, not a search engine. No ranking, no fuzzy matching.
+- Drill progress lives in localStorage. No accounts, no sync; clear the browser and it's gone.
 
-- `casebooks/` PDFs by school (not committed, use the download script)
-- `.index/` extracted text and the embeddings index (not committed)
-- `app/index.html` the Case Math Drill app
-- `scripts/` text extraction and embeddings build
-- `case_interview_math.md` math notes from all 20 books
+## license
+
+MIT. The casebooks themselves belong to their schools; this repo only stores links to them.
