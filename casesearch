@@ -27,11 +27,13 @@ for f in "$INDEX"/*.txt; do
       *) continue ;;
     esac
   fi
-  awk -v IGNORECASE=1 -v pat="$PATTERN" -v school="$name" '
-    BEGIN { page = 1 }
+  awk -v pat="$PATTERN" -v school="$name" '
+    # BSD awk has no IGNORECASE; lowercase both sides for portable
+    # case-insensitive matching, but print the original line.
+    BEGIN { page = 1; pat = tolower(pat) }
     {
       n = gsub(/\f/, "")          # count + strip form-feeds on this line
-      if ($0 ~ pat) {
+      if (tolower($0) ~ pat) {
         line = $0
         gsub(/^[ \t]+/, "", line)
         if (length(line) > 200) line = substr(line, 1, 200) "..."
